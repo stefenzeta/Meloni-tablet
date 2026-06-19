@@ -121,10 +121,10 @@
 </head>
 <body>
 <header>
-  <h1>ðŸˆ MELONE / COCOMERO â€” campo</h1>
+  <h1>&#127816; MELONE / COCOMERO &#8212; campo</h1>
   <div class="tabs">
     <button id="tb1" class="on" onclick="tab(1)">PERIZIA</button>
-    <button id="tb2" onclick="tab(2)">QUALITÃ€</button>
+    <button id="tb2" onclick="tab(2)">QUALIT&#192;</button>
     <button id="tb3" onclick="tab(3)">TAB. A/C</button>
     <button id="tb4" onclick="tab(4)">ARCHIVIO</button>
   </div>
@@ -133,7 +133,7 @@
 <!-- PERIZIA -->
 <div class="wrap page on" id="p1">
   <div class="actrow">
-    <button class="sv" onclick="salvaPerizia()">ðŸ’¾ Salva perizia</button>
+    <button class="sv" onclick="salvaPerizia()">&#128190; Salva perizia</button>
     <button class="nw" onclick="nuovaPerizia()">+ Nuova</button>
   </div>
   <div class="box">
@@ -147,8 +147,8 @@
         <div class="f"><label>Latitudine</label><input id="loc_lat" type="number" inputmode="decimal" oninput="recompute()" placeholder="es. 45.5412"></div>
         <div class="f"><label>Longitudine</label><input id="loc_lon" type="number" inputmode="decimal" oninput="recompute()" placeholder="es. 10.2167"></div>
       </div>
-      <button class="gps" onclick="getGPS()">ðŸ“ Prendi posizione</button>
-      <button class="mapsbtn" onclick="openMapsForm()">ðŸ—ºï¸ Apri su Google Maps</button>
+      <button class="gps" onclick="getGPS()">&#128205; Prendi posizione</button>
+      <button class="mapsbtn" onclick="openMapsForm()">&#128506;&#65039; Apri su Google Maps</button>
       <div class="note" id="loc_gps_msg" style="margin-top:6px">Acquisisce le coordinate dal GPS (4 decimali). Richiede GPS attivo e permesso posizione.</div>
     </div>
     <div id="loc_fm_box" style="display:none;margin-top:8px">
@@ -161,8 +161,8 @@
     </div>
   </div>
   <div class="box">
-    <h2>1 Â· Piante partita</h2>
-    <div class="f"><label>Superficie (mÂ²)</label>
+    <h2>1 &#183; Piante partita</h2>
+    <div class="f"><label>Superficie (m&#178;)</label>
       <div class="conv"><input id="sup" type="number" inputmode="decimal" oninput="recompute()"><button onclick="haToMq()">da ha</button></div>
     </div>
     <div class="g3">
@@ -170,19 +170,19 @@
       <div class="f"><label>Fila (m)</label><input id="y" type="number" inputmode="decimal" oninput="recompute()"></div>
       <div class="f"><label>Fallanze %</label><input id="k" type="number" inputmode="decimal" value="0" oninput="recompute()"></div>
     </div>
-    <div class="res hi"><span class="k">Piante partita (a)</span><span class="v" id="r_a">â€”</span></div>
-    <div class="res blue"><span class="k">Piante / ha</span><span class="v" id="r_aha">â€”</span></div>
+    <div class="res hi"><span class="k">Piante partita (a)</span><span class="v" id="r_a">&#8212;</span></div>
+    <div class="res blue"><span class="k">Piante / ha</span><span class="v" id="r_aha">&#8212;</span></div>
   </div>
 
   <div class="box">
-    <h2>2 Â· Potenziale</h2>
+    <h2>2 &#183; Potenziale</h2>
     <div class="g2">
       <div class="f"><label>Frutti/pianta potenz.</label><input id="bpot" type="number" inputmode="decimal" oninput="recompute()"></div>
       <div class="f"><label>Peso medio frutto kg</label><input id="peso" type="number" inputmode="decimal" oninput="recompute()"></div>
     </div>
-    <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">â€”</span></div>
-    <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">â€”</span></div>
-    <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">â€”</span></div>
+    <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
+    <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
+    <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
     <div class="tabsel" style="margin-top:8px">
       <button id="uA_part" class="on" onclick="setUnitA('part')">Dato a partita</button>
       <button id="uA_ha" onclick="setUnitA('ha')">Dato a q.li/ha</button>
@@ -191,47 +191,47 @@
       <div class="f"><label id="lbP">Potenziale confermato (P) q.li</label><input id="pot_perito" type="number" inputmode="decimal" oninput="recompute()" placeholder="= assicurata"></div>
       <div class="f"><label id="lbA">Q.li assicurati (A)</label><input id="assic" type="number" inputmode="decimal" oninput="recompute()"></div>
     </div>
-    <div class="note">Scegli l'unitÃ  del dato che inserisci. Con <b>q.li/ha</b> serve la superficie per la conversione a partita. Di default R = assicurato; compila P solo per <b>ridurlo</b>.</div>
-    <div class="res blue"><span class="k">Assicurata (A)</span><span class="v" id="r_A" style="font-size:16px;white-space:normal;text-align:right">â€”</span></div>
+    <div class="note">Scegli l'unit&#224; del dato che inserisci. Con <b>q.li/ha</b> serve la superficie per la conversione a partita. Di default R = assicurato; compila P solo per <b>ridurlo</b>.</div>
+    <div class="res blue"><span class="k">Assicurata (A)</span><span class="v" id="r_A" style="font-size:16px;white-space:normal;text-align:right">&#8212;</span></div>
   </div>
 
   <div class="box detr" id="detr_box" style="display:none">
     <h2>Detrazione potenziale</h2>
-    <div class="res"><span class="k">% detrazione applicata</span><span class="v" id="detr_pct">â€”</span></div>
-    <div class="res"><span class="k">Q.li/ha in meno</span><span class="v" id="detr_ha">â€”</span></div>
-    <div class="res"><span class="k">Q.li totali in meno</span><span class="v" id="detr_tot">â€”</span></div>
+    <div class="res"><span class="k">% detrazione applicata</span><span class="v" id="detr_pct">&#8212;</span></div>
+    <div class="res"><span class="k">Q.li/ha in meno</span><span class="v" id="detr_ha">&#8212;</span></div>
+    <div class="res"><span class="k">Q.li totali in meno</span><span class="v" id="detr_tot">&#8212;</span></div>
   </div>
 
   <div class="box">
-    <h2>3 Â· QuantitÃ </h2>
-    <div class="fromq">â†³ dalle letture della scheda QUALITÃ€</div>
-    <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="r_bott">â€”</span></div>
-    <div class="res"><span class="k">kg/pianta ottenibile</span><span class="v" id="r_kgott">â€”</span></div>
-    <div class="res"><span class="k">Prod. ottenibile (partita)</span><span class="v" id="r_ott">â€”</span></div>
-    <div class="res"><span class="k">Prod. ottenibile / ha</span><span class="v" id="r_ottha">â€”</span></div>
-    <div class="res"><span class="k">Produzione risarcibile (R)</span><span class="v" id="r_R" style="font-size:16px;white-space:normal;text-align:right">â€”</span></div>
-    <div class="res hi"><span class="k">DANNO QUANTITÃ€</span><span class="v" id="r_dq">â€”</span></div>
+    <h2>3 &#183; Quantit&#224;</h2>
+    <div class="fromq">&#8627; dalle letture della scheda QUALIT&#192;</div>
+    <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="r_bott">&#8212;</span></div>
+    <div class="res"><span class="k">kg/pianta ottenibile</span><span class="v" id="r_kgott">&#8212;</span></div>
+    <div class="res"><span class="k">Prod. ottenibile (partita)</span><span class="v" id="r_ott">&#8212;</span></div>
+    <div class="res"><span class="k">Prod. ottenibile / ha</span><span class="v" id="r_ottha">&#8212;</span></div>
+    <div class="res"><span class="k">Produzione risarcibile (R)</span><span class="v" id="r_R" style="font-size:16px;white-space:normal;text-align:right">&#8212;</span></div>
+    <div class="res hi"><span class="k">DANNO QUANTIT&#192;</span><span class="v" id="r_dq">&#8212;</span></div>
   </div>
 
   <div class="box">
-    <h2>4 Â· QualitÃ </h2>
-    <div class="fromq">â†³ media di tutte le letture, giÃ  residuata</div>
+    <h2>4 &#183; Qualit&#224;</h2>
+    <div class="fromq">&#8627; media di tutte le letture, gi&#224; residuata</div>
     <div class="res"><span class="k">Tabella usata</span><span class="v" id="r_tab" style="font-size:16px">Tab. A</span></div>
-    <div class="res"><span class="k">Letture qualitÃ  eseguite</span><span class="v" id="r_nlett">0</span></div>
-    <div class="res"><span class="k">Danno medio qualitÃ  (mediato)</span><span class="v" id="r_dmq">â€”</span></div>
-    <div class="res hi"><span class="k">DANNO QUALITÃ€ (residuato)</span><span class="v" id="r_dqu">â€”</span></div>
+    <div class="res"><span class="k">Letture qualit&#224; eseguite</span><span class="v" id="r_nlett">0</span></div>
+    <div class="res"><span class="k">Danno medio qualit&#224; (mediato)</span><span class="v" id="r_dmq">&#8212;</span></div>
+    <div class="res hi"><span class="k">DANNO QUALIT&#192; (residuato)</span><span class="v" id="r_dqu">&#8212;</span></div>
   </div>
 
   <div class="box final">
-    <h2>5 Â· Risultato</h2>
-    <div class="res"><span class="k">Danno quantitÃ </span><span class="v" id="r_dq2">â€”</span></div>
-    <div class="res"><span class="k">Danno qualitÃ  (residuato)</span><span class="v" id="r_dqu2">â€”</span></div>
-    <div class="res tot"><span class="k">Danno totale</span><span class="v" id="r_tot">â€”</span></div>
+    <h2>5 &#183; Risultato</h2>
+    <div class="res"><span class="k">Danno quantit&#224;</span><span class="v" id="r_dq2">&#8212;</span></div>
+    <div class="res"><span class="k">Danno qualit&#224; (residuato)</span><span class="v" id="r_dqu2">&#8212;</span></div>
+    <div class="res tot"><span class="k">Danno totale</span><span class="v" id="r_tot">&#8212;</span></div>
   </div>
   <div class="note" style="text-align:center;padding:0 6px 8px">Percentuali al lordo di franchigia. Verificare soglia/franchigia di contratto.</div>
 </div>
 
-<!-- QUALITÃ€ -->
+<!-- QUALIT&#192; -->
 <div class="wrap page" id="p2">
   <div class="box">
     <h2>Tabella di riferimento</h2>
@@ -251,15 +251,15 @@
   </div>
 
   <div id="letture"></div>
-  <button class="qadd" onclick="addLettura()">ï¼‹ AGGIUNGI LETTURA</button>
+  <button class="qadd" onclick="addLettura()">&#65291; AGGIUNGI LETTURA</button>
 
   <div class="box qtot">
-    <h2>Totale qualitÃ </h2>
+    <h2>Totale qualit&#224;</h2>
     <div class="res"><span class="k">Letture eseguite</span><span class="v" id="q_n">0</span></div>
     <div class="res"><span class="k">Frutti contati totali</span><span class="v" id="q_frutti">0</span></div>
-    <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="q_bott">â€”</span></div>
-    <div class="res big"><span class="k">Danno medio qualitÃ  (mediato)</span><span class="v" id="q_dmq">â€”</span></div>
-    <div class="note" style="color:#cfc6b4">Entra da solo nella PERIZIA (quantitÃ  + qualitÃ  residuata).</div>
+    <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="q_bott">&#8212;</span></div>
+    <div class="res big"><span class="k">Danno medio qualit&#224; (mediato)</span><span class="v" id="q_dmq">&#8212;</span></div>
+    <div class="note" style="color:#cfc6b4">Entra da solo nella PERIZIA (quantit&#224; + qualit&#224; residuata).</div>
   </div>
 </div>
 
@@ -267,9 +267,9 @@
 <div class="wrap page" id="p3">
   <div class="box">
     <h2>Tabelle di liquidazione</h2>
-    <div class="note" style="margin:-4px 0 4px">Active Raccolto, Generali/Cattolica â€” ed. 20.02.2026. Danno di qualitÃ  calcolato sul prodotto residuo (Art. 13.3).</div>
+    <div class="note" style="margin:-4px 0 4px">Active Raccolto, Generali/Cattolica &#8212; ed. 20.02.2026. Danno di qualit&#224; calcolato sul prodotto residuo (Art. 13.3).</div>
     <div id="legend"></div>
-    <div class="lgnote">In tutte le tabelle: i frutti <b>persi, distrutti o con marcescenza/alterazioni</b> da eventi assicurati (non destinabili a trasformazione) â†’ valutati <b>solo agli effetti del danno di quantitÃ </b>.</div>
+    <div class="lgnote">In tutte le tabelle: i frutti <b>persi, distrutti o con marcescenza/alterazioni</b> da eventi assicurati (non destinabili a trasformazione) &#8594; valutati <b>solo agli effetti del danno di quantit&#224;</b>.</div>
   </div>
 </div>
 
@@ -283,39 +283,39 @@
 
 <div class="foot">
   <button class="rst" onclick="resetAll()">Azzera</button>
-  <button class="exp" onclick="exportTxt()">â¬‡ Salva .txt</button>
+  <button class="exp" onclick="exportTxt()">&#11015; Salva .txt</button>
 </div>
 
-<div class="owner">ProprietÃ  di Stefano Zanardini Â· cod. 7313</div>
+<div class="owner">Propriet&#224; di Stefano Zanardini &#183; cod. 7313</div>
 <script>
 const PRESETS={
-  A_cm:{label:'Tab. A',sub:'Tab. A â€” Cocomeri (escluso Sugar Baby) e Meloni â€” tutte le avversitÃ ',
+  A_cm:{label:'Tab. A',sub:'Tab. A \u2014 Cocomeri (escluso Sugar Baby) e Meloni \u2014 tutte le avversit\u00e0',
     bands:[{l:'a',nm:'Illesi',cf:0},{l:'b',nm:'Lievi',cf:30},{l:'c',nm:'Medie',cf:55},{l:'d',nm:'Gravi',cf:80},{l:'e',nm:'Molto gravi',cf:90}]},
-  A_sb:{label:'Tab. A SB',sub:'Tab. A â€” Cocomeri Sugar Baby e simili â€” tutte le avversitÃ ',
+  A_sb:{label:'Tab. A SB',sub:'Tab. A \u2014 Cocomeri Sugar Baby e simili \u2014 tutte le avversit\u00e0',
     bands:[{l:'a',nm:'Illesi',cf:0},{l:'b',nm:'Lievi',cf:10},{l:'c',nm:'Medie',cf:40},{l:'d',nm:'Gravi',cf:80},{l:'e',nm:'Molto gravi',cf:90}]},
-  C_co:{label:'Tab. C Coco',sub:'Tab. C â€” liquidazione, colonna Cocomeri',
+  C_co:{label:'Tab. C Coco',sub:'Tab. C \u2014 liquidazione, colonna Cocomeri',
     bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:20},{l:'c',nm:'Cat. c',cf:50},{l:'d',nm:'Cat. d',cf:85}]},
-  C_me:{label:'Tab. C Mel',sub:'Tab. C â€” liquidazione, colonna Meloni, Cocomeri Sugar Baby, Cocomeri Mini',
+  C_me:{label:'Tab. C Mel',sub:'Tab. C \u2014 liquidazione, colonna Meloni, Cocomeri Sugar Baby, Cocomeri Mini',
     bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:30},{l:'c',nm:'Cat. c',cf:60},{l:'d',nm:'Cat. d',cf:85}]}
 };
 const LEGEND=[
- {t:'Tab. A â€” Cocomeri (escluso Sugar Baby) e Meloni',cols:'% danno',rows:[
+ {t:'Tab. A \u2014 Cocomeri (escluso Sugar Baby) e Meloni',cols:'% danno',rows:[
    ['a) Illesi','0','illesi; qualche incisione all\u2019epicarpo; decolorazioni lievi dell\u2019epicarpo'],
-   ['b) Lievi','30','piÃ¹ incisioni all\u2019epicarpo; qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
-   ['c) Medie','55','piÃ¹ incisioni medie al mesocarpo; deformazioni medie; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
+   ['b) Lievi','30','pi\u00f9 incisioni all\u2019epicarpo; qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
+   ['c) Medie','55','pi\u00f9 incisioni medie al mesocarpo; deformazioni medie; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
    ['d) Gravi','80','qualche incisione profonda al mesocarpo; deformazioni gravi; bruciature notevoli dell\u2019epicarpo'],
    ['e) Molto gravi','90','deformazioni molto gravi']]},
- {t:'Tab. A â€” Cocomeri Sugar Baby e simili',cols:'% danno',rows:[
+ {t:'Tab. A \u2014 Cocomeri Sugar Baby e simili',cols:'% danno',rows:[
    ['a) Illesi','0','illesi; qualche incisione all\u2019epicarpo; decolorazioni lievi dell\u2019epicarpo'],
-   ['b) Lievi','10','piÃ¹ incisioni all\u2019epicarpo; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
+   ['b) Lievi','10','pi\u00f9 incisioni all\u2019epicarpo; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
    ['c) Medie','40','qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
    ['d) Gravi','80','qualche incisione media al mesocarpo; deformazioni medie; bruciature notevoli dell\u2019epicarpo'],
    ['e) Molto gravi','90','qualche incisione profonda al mesocarpo; deformazioni gravi']]},
- {t:'Tab. C â€” Cocomeri e Meloni (liquidazione)',cols:'Coco Â· Mel/SB/Mini',rows:[
-   ['a)','0 Â· 0','I frutti di questa classe di danno devono essere di qualitÃ  superiore o buona. Devono essere ben formati, presentare il peso (minimo 1,5 Kg) e la colorazione tipici della VarietÃ .<br>Fanno parte anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano un lieve difetto di forma, un lieve difetto di sviluppo, un lieve difetto di colorazione per la parte piÃ¹ chiara che Ã¨ stata a contatto col suolo, piccole fenditure superficiali nella buccia (epicarpo) non superiori a:<br>â€¢ 2 cm di lunghezza per difetti di forma allungata (1 cm per i meloni e minicocomeri)<br>â€¢ 1,0 cmÂ² di superficie totale per gli altri difetti.'],
-   ['b)','20 Â· 30','I frutti di questa classe devono presentare la forma, il peso non inferiore kg 1 e la colorazione tipici della VarietÃ , ma tali da non poter rientrare nella precedente classe a). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>â€¢ 4 cm di lunghezza per difetti di forma allungata; (2 cm per il melone e minicocomeri)<br>â€¢ 2,5 cmÂ² di superficie totale per gli altri difetti; (2 cmÂ² per il melone)<br>â€¢ 0,75 cmÂ² di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>â€¢ 0,25 cmÂ² di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
-   ['c)','50 Â· 60','I frutti di questa classe devono presentare la forma, il peso non inferiore a kg 1 e la colorazione tipici della VarietÃ , ma tali da non poter rientrare nelle precedenti classi a) e b). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>â€¢ 6 cm di lunghezza per difetti di forma allungata; (4 cm per il melone e minicocomeri)<br>â€¢ 5,0 cmÂ² di superficie totale per gli altri difetti; (3 cmÂ² per il melone)<br>â€¢ 1,5 cmÂ² di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>â€¢ 0,50 cmÂ² di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
-   ['d)','85 Â· 85','I frutti di questa classe devono presentare la forma, il calibro e la colorazione tipici della VarietÃ , ma di qualitÃ  tale da non poter rientrare nelle precedenti classi: a), b) e c), causa gli eventi atmosferici coperti da garanzia.']]}
+ {t:'Tab. C \u2014 Cocomeri e Meloni (liquidazione)',cols:'Coco \u00b7 Mel/SB/Mini',rows:[
+   ['a)','0 \u00b7 0','I frutti di questa classe di danno devono essere di qualit\u00e0 superiore o buona. Devono essere ben formati, presentare il peso (minimo 1,5 Kg) e la colorazione tipici della Variet\u00e0.<br>Fanno parte anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano un lieve difetto di forma, un lieve difetto di sviluppo, un lieve difetto di colorazione per la parte pi\u00f9 chiara che \u00e8 stata a contatto col suolo, piccole fenditure superficiali nella buccia (epicarpo) non superiori a:<br>\u2022 2 cm di lunghezza per difetti di forma allungata (1 cm per i meloni e minicocomeri)<br>\u2022 1,0 cm\u00b2 di superficie totale per gli altri difetti.'],
+   ['b)','20 \u00b7 30','I frutti di questa classe devono presentare la forma, il peso non inferiore kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nella precedente classe a). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 4 cm di lunghezza per difetti di forma allungata; (2 cm per il melone e minicocomeri)<br>\u2022 2,5 cm\u00b2 di superficie totale per gli altri difetti; (2 cm\u00b2 per il melone)<br>\u2022 0,75 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>\u2022 0,25 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
+   ['c)','50 \u00b7 60','I frutti di questa classe devono presentare la forma, il peso non inferiore a kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nelle precedenti classi a) e b). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 6 cm di lunghezza per difetti di forma allungata; (4 cm per il melone e minicocomeri)<br>\u2022 5,0 cm\u00b2 di superficie totale per gli altri difetti; (3 cm\u00b2 per il melone)<br>\u2022 1,5 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>\u2022 0,50 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
+   ['d)','85 \u00b7 85','I frutti di questa classe devono presentare la forma, il calibro e la colorazione tipici della Variet\u00e0, ma di qualit\u00e0 tale da non poter rientrare nelle precedenti classi: a), b) e c), causa gli eventi atmosferici coperti da garanzia.']]}
 ];
 
 let ACTIVE='A_cm';
@@ -396,7 +396,7 @@ function loadArch(){try{const r=localStorage.getItem(ARCHKEY);return r?JSON.pars
 function storeArch(a){try{localStorage.setItem(ARCHKEY,JSON.stringify(a));}catch(e){}}
 function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function itDate(iso){if(!iso)return '';const x=(''+iso).split('-');return x.length===3?(x[2]+'/'+x[1]+'/'+x[0]):iso;}
-function dannoTxt(){return (document.getElementById('r_tot').textContent||'').replace('â€”','');}
+function dannoTxt(){return (document.getElementById('r_tot').textContent||'').replace('\u2014','');}
 function salvaPerizia(){
   const a=loadArch();
   if(CURID){const e=a.find(x=>x.id===CURID);
@@ -444,7 +444,7 @@ function tab(n){for(let i=1;i<=4;i++){document.getElementById('p'+i).classList.t
 function setUnitA(u){UNITA=u;
   document.getElementById('uA_part').classList.toggle('on',u==='part');
   document.getElementById('uA_ha').classList.toggle('on',u==='ha');
-  setT('lbA',u==='ha'?'Assicurata (q.li/ha)':'Q.li assicurati (A) â€” partita');
+  setT('lbA',u==='ha'?'Assicurata (q.li/ha)':'Q.li assicurati (A) \u2014 partita');
   setT('lbP',u==='ha'?'Potenziale confermato (q.li/ha)':'Potenziale confermato (P) q.li');
   recompute();
 }
@@ -486,11 +486,11 @@ function renderLetture(){
     html+='<div class="f"><label>Peso frutto letto (kg)</label><input type="number" inputmode="decimal" value="'+wval+'" placeholder="'+ph+'" oninput="setW('+li+',this.value)"></div></div>';
     bandsActive().forEach((x,i)=>{
       html+='<div class="band"><div class="nm"><b>'+x.l+')</b> '+x.nm+'<span class="cfb" id="lcf'+li+'_'+i+'">'+coeffs[i]+'%</span></div>'+
-        '<div class="ct"><button class="minus" onclick="lstep('+li+','+i+',-1)">âˆ’</button>'+
+        '<div class="ct"><button class="minus" onclick="lstep('+li+','+i+',-1)">\u2212</button>'+
         '<input class="val" id="lv'+li+'_'+i+'" type="number" inputmode="numeric" value="'+L.c[i]+'" oninput="setC('+li+','+i+',this.value)">'+
         '<button class="plus" onclick="lstep('+li+','+i+',1)">+</button></div></div>';
     });
-    html+='<div class="lout"><span class="k">Frutti Â· Danno medio lettura</span><span class="v"><span id="lfr'+li+'">0</span> Â· <span id="ldmq'+li+'">â€”</span></span></div>';
+    html+='<div class="lout"><span class="k">Frutti \u00b7 Danno medio lettura</span><span class="v"><span id="lfr'+li+'">0</span> \u00b7 <span id="ldmq'+li+'">\u2014</span></span></div>';
     div.innerHTML=html;box.appendChild(div);
   });
 }
@@ -518,33 +518,33 @@ function recompute(){
   const s=nv('sup'),x=nv('x'),y=nv('y'),k=nv('k');
   const aha=(x>0&&y>0)?(10000/(x*y))*((100-k)/100):0;
   const a=(x>0&&y>0)?(s/(x*y))*((100-k)/100):0;
-  setT('r_a',a?f(a,0):'â€”'); setT('r_aha',aha?f(aha,0):'â€”');
+  setT('r_a',a?f(a,0):'\u2014'); setT('r_aha',aha?f(aha,0):'\u2014');
   const bpot=nv('bpot'),peso=nv('peso');
   const kgpot=bpot*peso, pot=a*kgpot/100, potha=aha*kgpot/100;
-  setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'â€”');
-  setT('r_pot',pot?f(pot,2)+' q.li':'â€”');
-  setT('r_potha',potha?f(potha,2)+' q.li/ha':'â€”');
+  setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'\u2014');
+  setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
+  setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
 
   let SA=0,SC=0,PL=0,KG=0;
   letture.forEach((L,li)=>{
     let sa=0,sc=0; L.c.forEach((n,i)=>{sa+=n;sc+=n*(coeffs[i]||0);});
     const w=(L.w&&L.w>0)?L.w:peso;
     const dm=sa>0?sc/sa:0;
-    setT('lfr'+li,sa); setT('ldmq'+li, sa>0?f(dm,1)+'%':'â€”');
+    setT('lfr'+li,sa); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
     bandsActive().forEach((b,i)=>setT('lcf'+li+'_'+i,(coeffs[i]||0)+'%'));
     SA+=sa; SC+=sc; PL+=(L.pl>0?L.pl:0); KG+=sa*w;
   });
   const dmq=SA>0?SC/SA:0, bott=PL>0?SA/PL:0, kmean=PL>0?KG/PL:0;
   setT('q_n',letture.length); setT('q_frutti',SA);
-  setT('q_bott',SA>0?f(bott,2):'â€”'); setT('q_dmq',SA>0?f(dmq,1)+'%':'â€”');
+  setT('q_bott',SA>0?f(bott,2):'\u2014'); setT('q_dmq',SA>0?f(dmq,1)+'%':'\u2014');
 
   const ott=a*kmean/100, ottha=aha*kmean/100;
-  setT('r_bott',SA>0?f(bott,2):'â€”');
-  setT('r_kgott',SA>0?f(kmean,3)+' kg':'â€”');
-  setT('r_ott',SA>0?f(ott,2)+' q.li':'â€”');
-  setT('r_ottha',SA>0?f(ottha,2)+' q.li/ha':'â€”');
+  setT('r_bott',SA>0?f(bott,2):'\u2014');
+  setT('r_kgott',SA>0?f(kmean,3)+' kg':'\u2014');
+  setT('r_ott',SA>0?f(ott,2)+' q.li':'\u2014');
+  setT('r_ottha',SA>0?f(ottha,2)+' q.li/ha':'\u2014');
   setT('r_nlett',letture.length);
-  setT('r_dmq',SA>0?f(dmq,1)+'%':'â€”');
+  setT('r_dmq',SA>0?f(dmq,1)+'%':'\u2014');
 
   const sup_ha=s/10000;
   const rawA=nv('assic'), rawP=nv('pot_perito');
@@ -552,13 +552,13 @@ function recompute(){
   const ppIn = (UNITA==='ha') ? rawP*sup_ha : rawP;
   const Pconf = ppIn>0 ? ppIn : (A>0?A:pot);
   const R = A>0 ? Math.min(A,Pconf) : Pconf;
-  // assicurata in entrambe le unitÃ 
-  let aStr='â€”';
-  if(UNITA==='ha' && rawA>0) aStr=f(rawA,2)+' q.li/ha'+(sup_ha>0?(' Â· '+f(A,2)+' q.li'):'');
-  else if(rawA>0) aStr=f(rawA,2)+' q.li'+(sup_ha>0?(' Â· '+f(rawA/sup_ha,2)+' q.li/ha'):'');
+  // assicurata in entrambe le unit\u00e0
+  let aStr='\u2014';
+  if(UNITA==='ha' && rawA>0) aStr=f(rawA,2)+' q.li/ha'+(sup_ha>0?(' \u00b7 '+f(A,2)+' q.li'):'');
+  else if(rawA>0) aStr=f(rawA,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(rawA/sup_ha,2)+' q.li/ha'):'');
   setT('r_A',aStr);
-  // risarcibile in entrambe le unitÃ 
-  setT('r_R',(R>0&&a>0)?(f(R,2)+' q.li'+(sup_ha>0?(' Â· '+f(R/sup_ha,2)+' q.li/ha'):'')):'â€”');
+  // risarcibile in entrambe le unit\u00e0
+  setT('r_R',(R>0&&a>0)?(f(R,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(R/sup_ha,2)+' q.li/ha'):'')):'\u2014');
 
   // detrazione: solo se confermo una potenziale piu bassa dell'assicurata
   const db=document.getElementById('detr_box');
@@ -572,10 +572,10 @@ function recompute(){
     const dq=Math.max(0,(R-ott)/R*100);
     const dqu=dmq*(100-dq)/100;
     const rdq=Math.round(dq), rdqu=Math.round(dqu);
-    setT('r_dq',f(dq,1)+'% â†’ '+rdq);
-    setT('r_dqu',f(dqu,1)+'% â†’ '+rdqu);
+    setT('r_dq',f(dq,1)+'% \u2192 '+rdq);
+    setT('r_dqu',f(dqu,1)+'% \u2192 '+rdqu);
     setT('r_dq2',rdq+'%'); setT('r_dqu2',rdqu+'%'); setT('r_tot',(rdq+rdqu)+'%');
-  } else {setT('r_dq','â€”');setT('r_dqu','â€”');setT('r_dq2','â€”');setT('r_dqu2','â€”');setT('r_tot','â€”');}
+  } else {setT('r_dq','\u2014');setT('r_dqu','\u2014');setT('r_dq2','\u2014');setT('r_dqu2','\u2014');setT('r_tot','\u2014');}
   saveWork();
 }
 
@@ -645,4 +645,4 @@ keepAwake();document.body.addEventListener('click',()=>{if(!_wl)keepAwake();});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
-  </html>
+</html>
