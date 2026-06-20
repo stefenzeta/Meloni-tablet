@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Melone / Cocomero</title>
+<title>Pomodoro</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
@@ -11,88 +11,74 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-  :root{--bg:#ffffff;--paper:#ffffff;--ink:#000000;--bord:#000000;
-    --orange:#d4540e;--orange-d:#a83f08;--blue:#0e3168;--green:#15673a;--red:#a81818;
-    --gray:#3a3630;--minus:#8a8275;}
+  :root{--bg:#fff;--paper:#fff;--ink:#000;--bord:#000;--orange:#c62828;--orange-d:#9a1f1f;
+    --blue:#0e3168;--green:#15673a;--red:#a81818;--gray:#3a3630;--minus:#8a8275;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
-  body{font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;background:var(--bg);
-    color:var(--ink);font-size:18px;line-height:1.35;padding:0;font-weight:600}
+  body{font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.35;font-weight:600}
   header{background:var(--ink);color:#fff;padding:10px 12px 0;position:sticky;top:0;z-index:20}
-  header h1{margin:0;font-size:17px;font-weight:900;letter-spacing:.3px}
+  header h1{margin:0;font-size:17px;font-weight:900}
   .tabs{display:flex;gap:5px;margin-top:8px}
-  .tabs button{flex:1;background:#2b2b2b;color:#bdb6a8;border:none;border-radius:9px 9px 0 0;
-    padding:11px 6px;font-weight:900;font-size:14px}
+  .tabs button{flex:1;background:#2b2b2b;color:#bdb6a8;border:none;border-radius:9px 9px 0 0;padding:11px 6px;font-weight:900;font-size:14px}
   .tabs button.on{background:var(--orange);color:#fff}
   .wrap{max-width:720px;margin:0 auto;padding:14px 12px}
   .page{display:none}.page.on{display:block}
   .box{background:var(--paper);border:3px solid var(--bord);border-radius:10px;padding:14px;margin-bottom:16px}
-  .box h2{margin:0 0 12px;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;
-    background:var(--ink);color:#fff;display:inline-block;padding:6px 14px;border-radius:6px}
+  .box h2{margin:0 0 12px;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;background:var(--ink);color:#fff;display:inline-block;padding:6px 14px;border-radius:6px}
   label{display:block;font-size:13px;font-weight:800;color:var(--gray);text-transform:uppercase;letter-spacing:.3px;margin:0 0 4px}
   input{width:100%;font-size:22px;font-weight:800;padding:12px;border:2.5px solid var(--bord);border-radius:8px;background:#fff;color:var(--ink);text-align:center;-moz-appearance:textfield}
   input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   input:focus{outline:none;border-color:var(--orange)}
   .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
   .f{margin-bottom:10px}
-  .conv{display:flex;gap:6px}
-  .conv button{flex:0 0 78px;border:2.5px solid var(--bord);border-radius:8px;background:var(--blue);color:#fff;font-weight:900;font-size:13px}
+  .conv{display:flex;gap:6px}.conv button{flex:0 0 78px;border:2.5px solid var(--bord);border-radius:8px;background:var(--blue);color:#fff;font-weight:900;font-size:13px}
+  .toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .toggle button{padding:12px;border:2.5px solid var(--bord);border-radius:9px;background:#efece4;color:var(--ink);font-weight:900;font-size:14px}
+  .toggle button.on{background:var(--orange);color:#fff}
   .res{display:flex;justify-content:space-between;align-items:center;border-top:2px dashed #bbb;padding:10px 0}
   .res:first-of-type{border-top:none}
   .res .k{font-size:14px;font-weight:800;color:var(--gray);text-transform:uppercase;flex:1;padding-right:10px}
-  .res .v{font-size:24px;font-weight:900;color:var(--ink);white-space:nowrap}
-  .res.hi .v{font-size:30px;color:var(--orange-d)}
-  .res.blue .v{color:var(--blue)}.res.green .v{color:var(--green)}
-  .detr{border-color:var(--red)!important}
-  .detr h2{background:var(--red)}.detr .res .v{color:var(--red)}
-  /* selettore tabella */
-  .tabsel{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .tabsel button{padding:12px 8px;border:2.5px solid var(--bord);border-radius:9px;background:#efece4;color:var(--ink);font-weight:900;font-size:13px;line-height:1.15}
-  .tabsel button.on{background:var(--orange);color:#fff}
-  /* coefficienti */
-  .coefrow{display:grid;gap:8px}
-  .ci{border:2.5px solid var(--bord);border-radius:10px;padding:8px 3px;text-align:center;background:#fff}
-  .ci .lab{font-size:12.5px;font-weight:900;color:var(--orange-d);line-height:1.1;min-height:32px;display:flex;align-items:center;justify-content:center}
-  .ci .cin{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:6px}
-  .ci .cin input{width:48px;font-size:18px;padding:7px 2px;text-align:center}
-  .ci .cin .pc{font-size:15px;font-weight:800;color:var(--gray)}
-  /* letture */
+  .res .v{font-size:23px;font-weight:900;color:var(--ink);white-space:nowrap}
+  .res.hi .v{font-size:29px;color:var(--orange-d)}.res.blue .v{color:var(--blue)}.res.green .v{color:var(--green)}
+  .detr{border-color:var(--red)!important}.detr h2{background:var(--red)}.detr .res .v{color:var(--red)}
+  .coefrow{display:flex;flex-direction:column;gap:8px}
+  .ci{display:flex;align-items:center;justify-content:space-between;gap:10px;border:2.5px solid var(--bord);border-radius:10px;padding:9px 12px;background:#fff}
+  .ci .lab{font-size:15px;font-weight:900;color:var(--orange-d)}
+  .ci .cin{display:flex;align-items:center;gap:5px;flex:0 0 auto}
+  .ci .cin input{width:68px;font-size:19px;padding:9px 4px;text-align:center}
+  .ci .cin .pc{font-size:16px;font-weight:800;color:var(--gray)}
   .lettura{border:3px solid var(--bord);border-radius:12px;padding:12px;margin-bottom:16px;background:#fff}
   .lhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
   .lhead .t{font-size:15px;font-weight:900;background:var(--blue);color:#fff;padding:5px 12px;border-radius:6px}
   .lhead .rm{background:var(--red);color:#fff;border:none;border-radius:8px;font-weight:900;font-size:13px;padding:8px 12px}
   .band{display:flex;flex-direction:column;gap:8px;border:2.5px solid var(--bord);border-radius:10px;padding:9px;margin-bottom:8px;background:#fff}
-  .band .nm{font-size:17px;font-weight:900;line-height:1.1;display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+  .band .nm{font-size:16px;font-weight:900;line-height:1.1;display:flex;align-items:center;flex-wrap:wrap;gap:4px}
   .band .nm b{color:var(--orange-d)}
   .band .nm .cfb{display:inline-block;font-size:13px;font-weight:900;color:#fff;background:var(--orange-d);border-radius:6px;padding:2px 8px;margin-left:6px}
   .band .ct{display:flex;align-items:stretch;gap:8px}
-  .band .ct .minus{flex:0 0 70px;min-height:56px;border:2.5px solid var(--bord);border-radius:9px;font-size:28px;font-weight:900;color:#fff;background:var(--minus);line-height:1}
-  .band .ct input.val{flex:0 0 92px;width:92px;min-height:56px;font-size:30px;font-weight:900;border:2.5px solid var(--bord);border-radius:9px;background:#fff4e8;text-align:center;padding:0}
-  .band .ct .plus{flex:1;min-height:56px;border:2.5px solid var(--bord);border-radius:9px;font-size:40px;font-weight:900;color:#fff;background:var(--green);line-height:1}
-  .lout{display:flex;justify-content:space-between;align-items:center;background:#f0ede6;border:2px solid var(--bord);border-radius:8px;padding:8px 12px;margin-top:4px}
-  .lout .k{font-size:13px;font-weight:800;color:var(--gray);text-transform:uppercase}
-  .lout .v{font-size:20px;font-weight:900;color:var(--orange-d)}
+  .band .ct .minus{flex:0 0 64px;min-height:54px;border:2.5px solid var(--bord);border-radius:9px;font-size:26px;font-weight:900;color:#fff;background:var(--minus)}
+  .band .ct input.val{flex:0 0 84px;width:84px;min-height:54px;font-size:28px;font-weight:900;border:2.5px solid var(--bord);border-radius:9px;background:#fff4e8;text-align:center;padding:0}
+  .band .ct .plus{flex:1;min-height:54px;border:2.5px solid var(--bord);border-radius:9px;font-size:38px;font-weight:900;color:#fff;background:var(--green)}
+  .lout{display:flex;justify-content:space-between;align-items:center;background:#f0ede6;border:2px solid var(--bord);border-radius:8px;padding:8px 12px;margin-top:6px;flex-wrap:wrap;gap:4px}
+  .lout .k{font-size:12px;font-weight:800;color:var(--gray);text-transform:uppercase}
+  .lout .v{font-size:16px;font-weight:900;color:var(--orange-d)}
   .qadd{width:100%;padding:14px;border:3px dashed var(--green);border-radius:12px;background:#eaf6ee;color:var(--green);font-weight:900;font-size:16px;margin-bottom:16px}
-  .qtot{background:var(--ink);border-color:var(--ink)}
-  .qtot h2{background:var(--green);color:#fff}
+  .qtot{background:var(--ink);border-color:var(--ink)}.qtot h2{background:var(--green);color:#fff}
   .qtot .res{border-color:#444}.qtot .res .k{color:#cfc6b4}.qtot .res .v{color:#fff}
-  .qtot .res.big .v{font-size:32px;color:#a9e0bd}
-  .final{background:var(--ink);border-color:var(--ink)}
-  .final h2{background:var(--orange);color:#fff}
+  .qtot .res.big .v{font-size:27px;color:#a9e0bd}
+  .final{background:var(--ink);border-color:var(--ink)}.final h2{background:var(--orange);color:#fff}
   .final .res{border-color:#444}.final .res .k{color:#cfc6b4}.final .res .v{color:#fff}
-  .final .res.tot .v{font-size:40px;color:#ffcf9a}
+  .final .res.tot .v{font-size:36px;color:#ffb0a0}
   .fromq{font-size:12px;color:var(--blue);font-weight:800;text-transform:uppercase;margin:-4px 0 8px}
   .foot{background:#fff;border-top:3px solid var(--bord);padding:12px;display:flex;gap:10px;max-width:720px;margin:0 auto 16px}
   .foot button{flex:1;padding:14px;border:2.5px solid var(--bord);border-radius:10px;font-weight:900;font-size:16px}
   .exp{background:var(--orange);color:#fff}.rst{background:#efece4;color:var(--ink);flex:0 0 90px}
   .note{font-size:12px;color:var(--gray);font-weight:700;margin-top:8px}
-  .lgt{font-size:14px;font-weight:900;background:var(--ink);color:#fff;padding:7px 12px;border-radius:6px;margin:14px 0 8px}
   .lgrow{border:2.5px solid var(--bord);border-radius:10px;margin-bottom:9px;overflow:hidden}
   .lgrow .top{display:flex;align-items:center;justify-content:space-between;background:#f0ede6;padding:7px 12px}
-  .lgrow .top .cl{font-size:16px;font-weight:900}.lgrow .top .pc{font-size:15px;font-weight:900;color:var(--orange-d);text-align:right}
+  .lgrow .top .cl{font-size:16px;font-weight:900}.lgrow .top .pc{font-size:18px;font-weight:900;color:var(--orange-d)}
   .lgrow .desc{padding:9px 12px;font-size:14px;font-weight:600;line-height:1.35}
-  .lgnote{background:#fff;border:2.5px dashed var(--bord);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;margin-top:10px}
+  .lgnote{background:#fff;border:2.5px dashed var(--bord);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;margin-top:8px}
 
   /* --- archivio / luogo --- */
   .actrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
@@ -101,7 +87,7 @@
   .actrow .nw{background:#efece4;color:var(--ink)}
   .gps{width:100%;margin-top:8px;padding:13px;border:2.5px solid var(--orange-d);border-radius:9px;background:var(--orange);color:#fff;font-weight:900;font-size:16px}
   .arow{border:2.5px solid var(--bord);border-radius:10px;padding:11px 12px;background:#fff;margin-bottom:10px}
-  .arow.cur{border-color:var(--orange-d);background:#fff4e8}
+  .arow.cur{border-color:var(--orange-d);background:#fdeaea}
   .arow .atop{display:flex;justify-content:space-between;align-items:center;gap:8px}
   .arow .anome{font-size:17px;font-weight:900;color:var(--ink)}
   .arow .acur{font-size:11px;font-weight:900;color:#fff;background:var(--orange-d);border-radius:6px;padding:3px 8px;white-space:nowrap}
@@ -121,11 +107,11 @@
 </head>
 <body>
 <header>
-  <h1>&#127816; MELONE / COCOMERO &#8212; campo</h1>
+  <h1>&#127813; POMODORO CONCENTRATO &#8212; campo</h1>
   <div class="tabs">
     <button id="tb1" class="on" onclick="tab(1)">PERIZIA</button>
-    <button id="tb2" onclick="tab(2)">QUALIT&#192;</button>
-    <button id="tb3" onclick="tab(3)">TAB. A/C</button>
+    <button id="tb2" onclick="tab(2)">RILIEVI</button>
+    <button id="tb3" onclick="tab(3)">TABELLA</button>
     <button id="tb4" onclick="tab(4)">ARCHIVIO</button>
   </div>
 </header>
@@ -138,7 +124,7 @@
   </div>
   <div class="box">
     <h2>Luogo perizia</h2>
-    <div class="tabsel">
+    <div class="toggle">
       <button id="loc_coord" class="on" onclick="setLocType('coord')">Coordinate</button>
       <button id="loc_fm" onclick="setLocType('fm')">Dati</button>
     </div>
@@ -161,69 +147,81 @@
     </div>
   </div>
   <div class="box">
-    <h2>1 &#183; Piante partita</h2>
+    <h2>1 &#183; Sesto e piante</h2>
     <div class="f"><label>Superficie (m&#178;)</label>
       <div class="conv"><input id="sup" type="number" inputmode="decimal" oninput="recompute()"><button onclick="haToMq()">da ha</button></div>
     </div>
-    <div class="g3">
-      <div class="f"><label>File (m)</label><input id="x" type="number" inputmode="decimal" oninput="recompute()"></div>
-      <div class="f"><label>Fila (m)</label><input id="y" type="number" inputmode="decimal" oninput="recompute()"></div>
-      <div class="f"><label>Fallanze %</label><input id="k" type="number" inputmode="decimal" value="0" oninput="recompute()"></div>
+    <div class="toggle">
+      <button id="md_s" class="on" onclick="setMode('s')">Fila singola</button>
+      <button id="md_b" onclick="setMode('b')">Fila binata</button>
     </div>
-    <div class="res hi"><span class="k">Piante partita (a)</span><span class="v" id="r_a">&#8212;</span></div>
+    <div class="g2">
+      <div class="f"><label id="lx">Interfila (x) m</label><input id="x" type="number" inputmode="decimal" oninput="recompute()"></div>
+      <div class="f"><label>Dist. piante (y) m</label><input id="y" type="number" inputmode="decimal" oninput="recompute()"></div>
+    </div>
+    <div class="f"><label>Fallanze (k) %</label><input id="k" type="number" inputmode="decimal" value="0" oninput="recompute()"></div>
+    <div class="note" id="sestonote">Singola: piante = (sup&#215;10000)/(x&#183;y)&#215;(100&#8722;k)/100.</div>
+    <div class="res hi"><span class="k">Piante partita (i)</span><span class="v" id="r_a">&#8212;</span></div>
     <div class="res blue"><span class="k">Piante / ha</span><span class="v" id="r_aha">&#8212;</span></div>
   </div>
 
   <div class="box">
     <h2>2 &#183; Potenziale</h2>
     <div class="g2">
-      <div class="f"><label>Frutti/pianta potenz.</label><input id="bpot" type="number" inputmode="decimal" oninput="recompute()"></div>
-      <div class="f"><label>Peso medio frutto kg</label><input id="peso" type="number" inputmode="decimal" oninput="recompute()"></div>
+      <div class="f"><label>Bacche/pianta potenz.</label><input id="bpot" type="number" inputmode="decimal" oninput="recompute()"></div>
+      <div class="f"><label>Peso medio bacca kg</label><input id="peso" type="number" inputmode="decimal" oninput="recompute()"></div>
     </div>
     <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
-    <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
+    <div class="res blue"><span class="k">Prod. potenziale</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
-    <div class="tabsel" style="margin-top:8px">
-      <button id="uA_part" class="on" onclick="setUnitA('part')">Dato a partita</button>
-      <button id="uA_ha" onclick="setUnitA('ha')">Dato a q.li/ha</button>
+  </div>
+
+  <div class="box">
+    <h2>3 &#183; Quantit&#224; presente</h2>
+    <div class="fromq">&#8627; dalle bacche presenti rilevate</div>
+    <div class="res"><span class="k">Bacche presenti / pianta</span><span class="v" id="r_bott">&#8212;</span></div>
+    <div class="res"><span class="k">kg/pianta (peso medio pianta)</span><span class="v" id="r_kgott">&#8212;</span></div><div class="res"><span class="k">Peso medio bacca (misurato)</span><span class="v" id="r_pmb">&#8212;</span></div>
+    <div class="res green"><span class="k">Ottenibile (partita)</span><span class="v" id="r_ott">&#8212;</span></div>
+    <div class="res green"><span class="k">Ottenibile / ha</span><span class="v" id="r_ottha">&#8212;</span></div>
+  </div>
+
+  <div class="box">
+    <h2>4 &#183; Liquidazione quantit&#224;</h2>
+    <div class="toggle" style="margin-bottom:8px">
+      <button id="uA_part" onclick="setUnitA('part')">Dato a partita</button>
+      <button id="uA_ha" class="on" onclick="setUnitA('ha')">Dato a q.li/ha</button>
     </div>
-    <div class="g2" style="margin-top:8px">
-      <div class="f"><label id="lbP">Potenziale confermato (P) q.li</label><input id="pot_perito" type="number" inputmode="decimal" oninput="recompute()" placeholder="= assicurata"></div>
-      <div class="f"><label id="lbA">Q.li assicurati (A)</label><input id="assic" type="number" inputmode="decimal" oninput="recompute()"></div>
+    <div class="g2">
+      <div class="f"><label id="lbA">Assicurata (q.li/ha)</label><input id="assic" type="number" inputmode="decimal" oninput="recompute()"></div>
+      <div class="f"><label id="lbD">Detrazione (q.li/ha)</label><input id="detr" type="number" inputmode="decimal" oninput="recompute()" placeholder="0"></div>
     </div>
-    <div class="note">Scegli l'unit&#224; del dato che inserisci. Con <b>q.li/ha</b> serve la superficie per la conversione a partita. Di default R = assicurato; compila P solo per <b>ridurlo</b>.</div>
-    <div class="res blue"><span class="k">Assicurata (A)</span><span class="v" id="r_A" style="font-size:16px;white-space:normal;text-align:right">&#8212;</span></div>
+    <div class="note">Scegli se inserire i dati <b>a partita</b> o <b>a q.li/ha</b>. R = assicurata &#8722; detrazione. Detrazione = quota che giudichi NON in garanzia. Se A vuota uso la potenziale. Con dati a partita serve la superficie.</div>
+    <div class="res blue"><span class="k">Assicurata (A)</span><span class="v" id="r_Aboth" style="font-size:15px;white-space:normal;text-align:right">&#8212;</span></div>
+    <div class="res"><span class="k">Detrazione</span><span class="v" id="r_Dboth" style="font-size:15px;white-space:normal;text-align:right">&#8212;</span></div>
+    <div class="res green"><span class="k">Risarcibile R / ha</span><span class="v" id="r_Rha">&#8212;</span></div>
+    <div class="res"><span class="k">Risarcibile R (partita)</span><span class="v" id="r_R">&#8212;</span></div>
+    <div class="res"><span class="k">Asportato / ha</span><span class="v" id="r_aspha">&#8212;</span></div>
+    <div class="res"><span class="k">Asportato (partita)</span><span class="v" id="r_asp">&#8212;</span></div>
+    <div class="res hi"><span class="k">DANNO QUANTIT&#192;</span><span class="v" id="r_dq">&#8212;</span></div>
   </div>
 
   <div class="box detr" id="detr_box" style="display:none">
-    <h2>Detrazione potenziale</h2>
-    <div class="res"><span class="k">% detrazione applicata</span><span class="v" id="detr_pct">&#8212;</span></div>
+    <h2>Dettaglio detrazione</h2>
+    <div class="res"><span class="k">% detrazione su base</span><span class="v" id="detr_pct">&#8212;</span></div>
     <div class="res"><span class="k">Q.li/ha in meno</span><span class="v" id="detr_ha">&#8212;</span></div>
     <div class="res"><span class="k">Q.li totali in meno</span><span class="v" id="detr_tot">&#8212;</span></div>
   </div>
 
   <div class="box">
-    <h2>3 &#183; Quantit&#224;</h2>
-    <div class="fromq">&#8627; dalle letture della scheda QUALIT&#192;</div>
-    <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="r_bott">&#8212;</span></div>
-    <div class="res"><span class="k">kg/pianta ottenibile</span><span class="v" id="r_kgott">&#8212;</span></div>
-    <div class="res"><span class="k">Prod. ottenibile (partita)</span><span class="v" id="r_ott">&#8212;</span></div>
-    <div class="res"><span class="k">Prod. ottenibile / ha</span><span class="v" id="r_ottha">&#8212;</span></div>
-    <div class="res"><span class="k">Produzione risarcibile (R)</span><span class="v" id="r_R" style="font-size:16px;white-space:normal;text-align:right">&#8212;</span></div>
-    <div class="res hi"><span class="k">DANNO QUANTIT&#192;</span><span class="v" id="r_dq">&#8212;</span></div>
-  </div>
-
-  <div class="box">
-    <h2>4 &#183; Qualit&#224;</h2>
-    <div class="fromq">&#8627; media di tutte le letture, gi&#224; residuata</div>
-    <div class="res"><span class="k">Tabella usata</span><span class="v" id="r_tab" style="font-size:16px">Tab. A</span></div>
-    <div class="res"><span class="k">Letture qualit&#224; eseguite</span><span class="v" id="r_nlett">0</span></div>
-    <div class="res"><span class="k">Danno medio qualit&#224; (mediato)</span><span class="v" id="r_dmq">&#8212;</span></div>
+    <h2>5 &#183; Qualit&#224;</h2>
+    <div class="fromq">&#8627; media dei danni dei campioni, residuata</div>
+    <div class="res"><span class="k">Campioni eseguiti</span><span class="v" id="r_nlett">0</span></div>
+    <div class="res"><span class="k">Danno medio qualit&#224;</span><span class="v" id="r_dmq">&#8212;</span></div>
     <div class="res hi"><span class="k">DANNO QUALIT&#192; (residuato)</span><span class="v" id="r_dqu">&#8212;</span></div>
   </div>
 
   <div class="box final">
-    <h2>5 &#183; Risultato</h2>
+    <h2>6 &#183; Risultato</h2>
     <div class="res"><span class="k">Danno quantit&#224;</span><span class="v" id="r_dq2">&#8212;</span></div>
     <div class="res"><span class="k">Danno qualit&#224; (residuato)</span><span class="v" id="r_dqu2">&#8212;</span></div>
     <div class="res tot"><span class="k">Danno totale</span><span class="v" id="r_tot">&#8212;</span></div>
@@ -231,45 +229,32 @@
   <div class="note" style="text-align:center;padding:0 6px 8px">Percentuali al lordo di franchigia. Verificare soglia/franchigia di contratto.</div>
 </div>
 
-<!-- QUALIT&#192; -->
+<!-- RILIEVI -->
 <div class="wrap page" id="p2">
   <div class="box">
-    <h2>Tabella di riferimento</h2>
-    <div class="tabsel">
-      <button id="ts_A_cm" class="on" onclick="pickTable('A_cm')">Tab. A<br>Cocomeri/Meloni</button>
-      <button id="ts_A_sb" onclick="pickTable('A_sb')">Tab. A<br>Sugar Baby</button>
-      <button id="ts_C_co" onclick="pickTable('C_co')">Tab. C<br>Cocomeri</button>
-      <button id="ts_C_me" onclick="pickTable('C_me')">Tab. C<br>Meloni/SB/Mini</button>
-    </div>
-    <div class="note" id="tabsub"></div>
-  </div>
-
-  <div class="box">
-    <h2>Coefficienti</h2>
+    <h2>Coefficienti &#8212; Concentrato</h2>
     <div class="coefrow" id="coefrow"></div>
-    <div class="note">Modificabili. Le percentuali si aggiornano anche accanto alle classi nelle letture.</div>
+    <div class="note">Tab. A liquidativa Pomodoro, colonna Concentrato/Pomodorino. Modificabili.</div>
   </div>
-
   <div id="letture"></div>
-  <button class="qadd" onclick="addLettura()">&#65291; AGGIUNGI LETTURA</button>
-
+  <button class="qadd" onclick="addLettura()">&#65291; AGGIUNGI CAMPIONE</button>
   <div class="box qtot">
-    <h2>Totale qualit&#224;</h2>
-    <div class="res"><span class="k">Letture eseguite</span><span class="v" id="q_n">0</span></div>
-    <div class="res"><span class="k">Frutti contati totali</span><span class="v" id="q_frutti">0</span></div>
-    <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="q_bott">&#8212;</span></div>
-    <div class="res big"><span class="k">Danno medio qualit&#224; (mediato)</span><span class="v" id="q_dmq">&#8212;</span></div>
-    <div class="note" style="color:#cfc6b4">Entra da solo nella PERIZIA (quantit&#224; + qualit&#224; residuata).</div>
+    <h2>Totali rilievi</h2>
+    <div class="res"><span class="k">Campioni</span><span class="v" id="q_n">0</span></div>
+    <div class="res"><span class="k">Bacche presenti tot.</span><span class="v" id="q_pres">0</span></div>
+    <div class="res"><span class="k">Bacche presenti / pianta</span><span class="v" id="q_bott">&#8212;</span></div>
+    <div class="res big"><span class="k">Danno medio qualit&#224;</span><span class="v" id="q_dmq">&#8212;</span></div>
+    <div class="note" style="color:#cfc6b4">Entra da solo nella PERIZIA (quantit&#224; presente + qualit&#224;).</div>
   </div>
 </div>
 
-<!-- LEGENDA -->
+<!-- TABELLA -->
 <div class="wrap page" id="p3">
   <div class="box">
-    <h2>Tabelle di liquidazione</h2>
-    <div class="note" style="margin:-4px 0 4px">Active Raccolto, Generali/Cattolica &#8212; ed. 20.02.2026. Danno di qualit&#224; calcolato sul prodotto residuo (Art. 13.3).</div>
+    <h2>Tab. A &#8212; Pomodoro Concentrato</h2>
+    <div class="note" style="margin:-4px 0 10px">Tabella liquidativa Pomodoro, colonna Concentrato e Pomodorino &#8212; tutte le avversit&#224;. Active Raccolto, ed. 20.02.2026 (Art. 21.4).</div>
     <div id="legend"></div>
-    <div class="lgnote">In tutte le tabelle: i frutti <b>persi, distrutti o con marcescenza/alterazioni</b> da eventi assicurati (non destinabili a trasformazione) &#8594; valutati <b>solo agli effetti del danno di quantit&#224;</b>.</div>
+    <div class="lgnote"><b>Solo danno di quantit&#224;:</b> le bacche perse, distrutte o che presentano fenomeni di marcescenza evidente, raggrinzimento, depigmentazione della bacca per una superficie superiore a 2/3 dovuti agli eventi atmosferici assicurati, tali da azzerare il loro valore intrinseco e comunque che non possono essere destinate alla trasformazione industriale, vengono valutati solo agli effetti del danno di quantit&#224;.</div>
   </div>
 </div>
 
@@ -288,56 +273,30 @@
 
 <div class="owner">Propriet&#224; di Stefano Zanardini &#183; cod. 7313</div>
 <script>
-const PRESETS={
-  A_cm:{label:'Tab. A',sub:'Tab. A \u2014 Cocomeri (escluso Sugar Baby) e Meloni \u2014 tutte le avversit\u00e0',
-    bands:[{l:'a',nm:'Illesi',cf:0},{l:'b',nm:'Lievi',cf:30},{l:'c',nm:'Medie',cf:55},{l:'d',nm:'Gravi',cf:80},{l:'e',nm:'Molto gravi',cf:90}]},
-  A_sb:{label:'Tab. A SB',sub:'Tab. A \u2014 Cocomeri Sugar Baby e simili \u2014 tutte le avversit\u00e0',
-    bands:[{l:'a',nm:'Illesi',cf:0},{l:'b',nm:'Lievi',cf:10},{l:'c',nm:'Medie',cf:40},{l:'d',nm:'Gravi',cf:80},{l:'e',nm:'Molto gravi',cf:90}]},
-  C_co:{label:'Tab. C Coco',sub:'Tab. C \u2014 liquidazione, colonna Cocomeri',
-    bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:20},{l:'c',nm:'Cat. c',cf:50},{l:'d',nm:'Cat. d',cf:85}]},
-  C_me:{label:'Tab. C Mel',sub:'Tab. C \u2014 liquidazione, colonna Meloni, Cocomeri Sugar Baby, Cocomeri Mini',
-    bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:30},{l:'c',nm:'Cat. c',cf:60},{l:'d',nm:'Cat. d',cf:85}]}
-};
-const LEGEND=[
- {t:'Tab. A \u2014 Cocomeri (escluso Sugar Baby) e Meloni',cols:'% danno',rows:[
-   ['a) Illesi','0','illesi; qualche incisione all\u2019epicarpo; decolorazioni lievi dell\u2019epicarpo'],
-   ['b) Lievi','30','pi\u00f9 incisioni all\u2019epicarpo; qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
-   ['c) Medie','55','pi\u00f9 incisioni medie al mesocarpo; deformazioni medie; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
-   ['d) Gravi','80','qualche incisione profonda al mesocarpo; deformazioni gravi; bruciature notevoli dell\u2019epicarpo'],
-   ['e) Molto gravi','90','deformazioni molto gravi']]},
- {t:'Tab. A \u2014 Cocomeri Sugar Baby e simili',cols:'% danno',rows:[
-   ['a) Illesi','0','illesi; qualche incisione all\u2019epicarpo; decolorazioni lievi dell\u2019epicarpo'],
-   ['b) Lievi','10','pi\u00f9 incisioni all\u2019epicarpo; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
-   ['c) Medie','40','qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
-   ['d) Gravi','80','qualche incisione media al mesocarpo; deformazioni medie; bruciature notevoli dell\u2019epicarpo'],
-   ['e) Molto gravi','90','qualche incisione profonda al mesocarpo; deformazioni gravi']]},
- {t:'Tab. C \u2014 Cocomeri e Meloni (liquidazione)',cols:'Coco \u00b7 Mel/SB/Mini',rows:[
-   ['a)','0 \u00b7 0','I frutti di questa classe di danno devono essere di qualit\u00e0 superiore o buona. Devono essere ben formati, presentare il peso (minimo 1,5 Kg) e la colorazione tipici della Variet\u00e0.<br>Fanno parte anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano un lieve difetto di forma, un lieve difetto di sviluppo, un lieve difetto di colorazione per la parte pi\u00f9 chiara che \u00e8 stata a contatto col suolo, piccole fenditure superficiali nella buccia (epicarpo) non superiori a:<br>\u2022 2 cm di lunghezza per difetti di forma allungata (1 cm per i meloni e minicocomeri)<br>\u2022 1,0 cm\u00b2 di superficie totale per gli altri difetti.'],
-   ['b)','20 \u00b7 30','I frutti di questa classe devono presentare la forma, il peso non inferiore kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nella precedente classe a). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 4 cm di lunghezza per difetti di forma allungata; (2 cm per il melone e minicocomeri)<br>\u2022 2,5 cm\u00b2 di superficie totale per gli altri difetti; (2 cm\u00b2 per il melone)<br>\u2022 0,75 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>\u2022 0,25 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
-   ['c)','50 \u00b7 60','I frutti di questa classe devono presentare la forma, il peso non inferiore a kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nelle precedenti classi a) e b). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 6 cm di lunghezza per difetti di forma allungata; (4 cm per il melone e minicocomeri)<br>\u2022 5,0 cm\u00b2 di superficie totale per gli altri difetti; (3 cm\u00b2 per il melone)<br>\u2022 1,5 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>\u2022 0,50 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
-   ['d)','85 \u00b7 85','I frutti di questa classe devono presentare la forma, il calibro e la colorazione tipici della Variet\u00e0, ma di qualit\u00e0 tale da non poter rientrare nelle precedenti classi: a), b) e c), causa gli eventi atmosferici coperti da garanzia.']]}
+const BANDS=[
+  {l:'a',nm:'Illese',cf:0, d:'Fiori e bacche illese; depigmentazione della bacca per una superficie inferiore 1/10'},
+  {l:'b',nm:'Lievi',cf:5, d:'Qualche ammaccatura; lesioni cicatrizzate all\u2019epicarpo, depigmentazione della bacca per una superficie compresa tra 1/10 e 1/4'},
+  {l:'c',nm:'Medie',cf:20, d:'Pi\u00f9 ammaccature; lesioni non cicatrizzate all\u2019epicarpo; lesioni lievi al mesocarpo; deformazioni leggere, depigmentazione della bacca per una superficie compresa tra 1/4 e 2/3'},
+  {l:'d',nm:'Gravi',cf:55, d:'Lesioni medie al mesocarpo; deformazioni medie'},
+  {l:'e',nm:'Molto gravi',cf:70, d:'Lesioni profonde e gravi al mesocarpo'}
 ];
-
-let ACTIVE='A_cm';
-let coeffs=PRESETS[ACTIVE].bands.map(b=>b.cf);
-let letture=[{pl:10,c:[0,0,0,0,0],w:0}];
-let UNITA='part';
-const WORKKEY='melone_work_v1', ARCHKEY='melone_arch_v1';
+let MODE='s';
+let UNITA='ha';
+let coeffs=BANDS.map(b=>b.cf);
+let letture=[{pl:3,w:0,c:[0,0,0,0,0]}];
+const WORKKEY='pomodoro_work_v1', ARCHKEY='pomodoro_arch_v1';
 let LOCTYPE='coord', CURID=null;
-/* stato di calcolo */
 function getCalcState(){const inp={};document.querySelectorAll('input[id]').forEach(e=>inp[e.id]=e.value);
-  return {inp:inp,letture:letture,ACTIVE:ACTIVE,coeffs:coeffs,UNITA:UNITA,loctype:LOCTYPE};}
+  return {inp:inp,letture:letture,coeffs:coeffs,UNITA:UNITA,MODE:MODE,loctype:LOCTYPE};}
 function applyCalcState(st){
-  if(st.ACTIVE&&PRESETS[st.ACTIVE])ACTIVE=st.ACTIVE;
   if(Array.isArray(st.coeffs))coeffs=st.coeffs.slice();
   if(Array.isArray(st.letture)&&st.letture.length)letture=st.letture;
   if(st.UNITA)UNITA=st.UNITA;
+  if(st.MODE)MODE=st.MODE;
   if(st.loctype)LOCTYPE=st.loctype;
   if(st.inp)Object.keys(st.inp).forEach(id=>{const e=document.getElementById(id);if(e&&st.inp[id]!=null)e.value=st.inp[id];});
-  for(const k in PRESETS){const b=document.getElementById('ts_'+k);if(b)b.classList.toggle('on',k===ACTIVE);}
-  renderCoeff();renderLetture();setLocType(LOCTYPE);setUnitA(UNITA);
+  renderCoeff();renderLetture();setLocType(LOCTYPE);setUnitA(UNITA);setMode(MODE);
 }
-/* luogo / GPS */
 function setLocType(t){LOCTYPE=t;
   document.getElementById('loc_coord').classList.toggle('on',t==='coord');
   document.getElementById('loc_fm').classList.toggle('on',t==='fm');
@@ -362,7 +321,7 @@ function getGPS(){const msg=document.getElementById('loc_gps_msg');
     if(acc!=null&&acc<=25){stopGPS();}
   },function(err){
     if(err.code===1){msg.textContent='Permesso posizione negato. Attiva la posizione per questa app.';stopGPS();}
-    else{msg.textContent='Ancora nessun aggancio: tieni il tablet all\'aperto, cielo libero, GPS attivo...';}
+    else{msg.textContent='Ancora nessun aggancio: tieni il dispositivo all\'aperto, cielo libero, GPS attivo...';}
   },{enableHighAccuracy:true,timeout:90000,maximumAge:0});
   _gpsTimer=setTimeout(function(){if(!_gpsBest){msg.textContent='Posizione non ottenuta dopo 90s. All\'aperto con cielo libero e GPS attivo, riprova.';}stopGPS();},92000);
 }
@@ -374,24 +333,20 @@ function locLabel(){
 function geoLat(){return (document.getElementById('loc_lat').value||'').trim();}
 function geoLon(){return (document.getElementById('loc_lon').value||'').trim();}
 function openMapsForm(){const la=geoLat(),lo=geoLon();
-  if(la&&lo){window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(la+','+lo),'_blank');}
+  if(la&&lo){window.open('https://www.google.com/maps/place/'+la+','+lo+'/@'+la+','+lo+',18z/data=!3m1!1e3','_blank');}
   else{alert('Inserisci o acquisisci prima le coordinate.');}}
 function geoOf(e){if(e.lat&&e.lon)return e.lat+','+e.lon;
   if(e.loctype==='coord'&&e.st&&e.st.inp&&e.st.inp.loc_lat&&e.st.inp.loc_lon)return e.st.inp.loc_lat+','+e.st.inp.loc_lon;
   const m=(''+(e.loc||'')).match(/^(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)$/);return m?(m[1]+','+m[2]):'';}
-/* autosave lavoro */
 function saveWork(){try{localStorage.setItem(WORKKEY,JSON.stringify({st:getCalcState(),curid:CURID}));}catch(e){}}
 function loadWork(){try{const raw=localStorage.getItem(WORKKEY);if(!raw)return;
   const o=JSON.parse(raw);if(typeof o.curid!=='undefined')CURID=o.curid;
-  if(o.st){if(o.st.ACTIVE&&PRESETS[o.st.ACTIVE])ACTIVE=o.st.ACTIVE;
-    if(Array.isArray(o.st.coeffs))coeffs=o.st.coeffs.slice();
+  if(o.st){if(Array.isArray(o.st.coeffs))coeffs=o.st.coeffs.slice();
     if(Array.isArray(o.st.letture)&&o.st.letture.length)letture=o.st.letture;
-    if(o.st.UNITA)UNITA=o.st.UNITA;if(o.st.loctype)LOCTYPE=o.st.loctype;
+    if(o.st.UNITA)UNITA=o.st.UNITA;if(o.st.MODE)MODE=o.st.MODE;if(o.st.loctype)LOCTYPE=o.st.loctype;
     if(o.st.inp)Object.keys(o.st.inp).forEach(id=>{const e=document.getElementById(id);if(e&&o.st.inp[id]!=null)e.value=o.st.inp[id];});
-    for(const k in PRESETS){const b=document.getElementById('ts_'+k);if(b)b.classList.toggle('on',k===ACTIVE);}
   }
 }catch(e){}}
-/* archivio */
 function loadArch(){try{const r=localStorage.getItem(ARCHKEY);return r?JSON.parse(r):[];}catch(e){return[];}}
 function storeArch(a){try{localStorage.setItem(ARCHKEY,JSON.stringify(a));}catch(e){}}
 function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -405,7 +360,7 @@ function salvaPerizia(){
   const _dperiz=(document.getElementById('dat_data').value||todayISO());
   const dft=(_assicNm||'Perizia')+' - '+itDate(_dperiz);
   const name=prompt('Nome perizia:',dft);if(name===null)return;
-  const id='m'+Date.now();
+  const id='t'+Date.now();
   a.unshift({id:id,name:(name||dft),date:_dperiz,loc:locLabel(),loctype:LOCTYPE,lat:geoLat(),lon:geoLon(),danno:dannoTxt(),st:getCalcState()});
   CURID=id;storeArch(a);saveWork();renderArch();alert('Perizia salvata in archivio.');
 }
@@ -425,14 +380,13 @@ function renderArch(){const box=document.getElementById('archlist');if(!box)retu
   a.forEach(function(e){const d=document.createElement('div');d.className='arow'+(e.id===CURID?' cur':'');
     d.innerHTML='<div class="atop"><span class="anome">'+esc(e.name||'')+'</span>'+(e.id===CURID?'<span class="acur">in uso</span>':'')+'</div>'+
       '<div class="ameta">\u{1F4CD} '+esc(e.loc||'-')+(e.danno?(' \u00B7 danno tot. '+esc(e.danno)):'')+'</div>'+
-      (geoOf(e)?('<a class="maps" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(geoOf(e))+'" target="_blank" rel="noopener">\u{1F5FA}\uFE0F Apri su Google Maps</a>'):'')+
+      (geoOf(e)?('<a class="maps" href="https://www.google.com/maps/place/'+geoOf(e)+'/@'+geoOf(e)+',18z/data=!3m1!1e3" target="_blank" rel="noopener">\u{1F5FA}\uFE0F Apri su Google Maps</a>'):'')+
       '<div class="adate"><label>Data</label><input type="date" value="'+esc(e.date||'')+'" onchange="dataPerizia(\''+e.id+'\',this.value)"></div>'+
       '<div class="abtn"><button class="open" onclick="aprePerizia(\''+e.id+'\')">Apri</button>'+
       '<button class="ren" onclick="rinominaPerizia(\''+e.id+'\')">Rinomina</button>'+
       '<button class="del" onclick="eliminaPerizia(\''+e.id+'\')">Elimina</button></div>';
     box.appendChild(d);});
 }
-function bandsActive(){return PRESETS[ACTIVE].bands;}
 
 function nv(id){const e=document.getElementById(id);if(!e)return 0;const v=parseFloat((e.value||'').toString().replace(',','.'));return isNaN(v)?0:v;}
 function f(v,d=2){return (isFinite(v)?v:0).toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d});}
@@ -440,142 +394,127 @@ function setT(id,t){const e=document.getElementById(id);if(e)e.textContent=t;}
 function haToMq(){const v=prompt('Ettari:');const q=parseFloat((v||'').replace(',','.'));if(!isNaN(q)){document.getElementById('sup').value=Math.round(q*10000);recompute();}}
 function tab(n){for(let i=1;i<=4;i++){document.getElementById('p'+i).classList.toggle('on',i===n);document.getElementById('tb'+i).classList.toggle('on',i===n);}
   document.querySelector('.foot').style.display=(n===1)?'flex':'none';window.scrollTo(0,0);}
-
 function setUnitA(u){UNITA=u;
   document.getElementById('uA_part').classList.toggle('on',u==='part');
   document.getElementById('uA_ha').classList.toggle('on',u==='ha');
-  setT('lbA',u==='ha'?'Assicurata (q.li/ha)':'Q.li assicurati (A) \u2014 partita');
-  setT('lbP',u==='ha'?'Potenziale confermato (q.li/ha)':'Potenziale confermato (P) q.li');
+  setT('lbA',u==='part'?'Assicurata (q.li partita)':'Assicurata (q.li/ha)');
+  setT('lbD',u==='part'?'Detrazione (q.li partita)':'Detrazione (q.li/ha)');
   recompute();
 }
-function pickTable(key){
-  if(key===ACTIVE)return;
-  const hasCounts=letture.some(L=>L.c.some(n=>n>0));
-  if(hasCounts && !confirm('Cambiare tabella azzera le letture in corso. Procedere?'))return;
-  ACTIVE=key;
-  coeffs=PRESETS[key].bands.map(b=>b.cf);
-  letture=[{pl:10,c:bandsActive().map(()=>0),w:0}];
-  for(const k in PRESETS){const b=document.getElementById('ts_'+k);if(b)b.classList.toggle('on',k===key);}
-  renderCoeff();renderLetture();recompute();
-}
+function setMode(m){MODE=m;document.getElementById('md_s').classList.toggle('on',m==='s');document.getElementById('md_b').classList.toggle('on',m==='b');
+  setT('lx',m==='s'?'Interfila (x) m':'Dist. centro bine (x) m');
+  setT('sestonote',m==='s'?'Singola: piante = (sup\u00d710000)/(x\u00b7y)\u00d7(100\u2212k)/100.':'Binata: piante = (sup\u00d710000)/((x\u00b7y)/2)\u00d7(100\u2212k)/100 (raddoppio bina).');
+  recompute();}
+
 function renderCoeff(){
-  const box=document.getElementById('coefrow');
-  box.style.gridTemplateColumns='repeat('+bandsActive().length+',1fr)';
-  box.innerHTML='';
-  bandsActive().forEach((b,i)=>{
-    const d=document.createElement('div');d.className='ci';
-    d.innerHTML='<div class="lab">'+b.l+')<br>'+b.nm+'</div><div class="cin"><input type="number" inputmode="decimal" value="'+coeffs[i]+'" oninput="setCoeff('+i+',this.value)"><span class="pc">%</span></div>';
-    box.appendChild(d);
-  });
-  setT('tabsub',PRESETS[ACTIVE].sub);
-  setT('r_tab',PRESETS[ACTIVE].label);
+  const box=document.getElementById('coefrow');box.innerHTML='';
+  BANDS.forEach((b,i)=>{const d=document.createElement('div');d.className='ci';
+    d.innerHTML='<div class="lab">'+b.l+') '+b.nm+'</div><div class="cin"><input type="number" inputmode="decimal" value="'+coeffs[i]+'" oninput="setCoeff('+i+',this.value)"><span class="pc">%</span></div>';
+    box.appendChild(d);});
 }
 function setCoeff(i,v){coeffs[i]=parseFloat((v||'').replace(',','.'))||0;recompute();}
 
 function renderLetture(){
-  const box=document.getElementById('letture');box.innerHTML='';
-  const pesoPot=nv('peso');
+  const box=document.getElementById('letture');box.innerHTML='';const pesoPot=nv('peso');
   letture.forEach((L,li)=>{
     const div=document.createElement('div');div.className='lettura';
-    let html='<div class="lhead"><span class="t">Lettura '+(li+1)+'</span>';
+    let html='<div class="lhead"><span class="t">Campione '+(li+1)+'</span>';
     if(letture.length>1) html+='<button class="rm" onclick="delLettura('+li+')">Rimuovi</button>';
     html+='</div><div class="g2">';
-    html+='<div class="f"><label>Piante lette</label><input type="number" inputmode="numeric" value="'+L.pl+'" oninput="setPl('+li+',this.value)"></div>';
+    html+='<div class="f"><label>Piante esaminate</label><input type="number" inputmode="numeric" value="'+L.pl+'" oninput="setPl('+li+',this.value)"></div>';
     const wval=(L.w&&L.w>0)?L.w:'';
-    const ph=pesoPot>0?('potenz. '+f(pesoPot,2)):'kg';
-    html+='<div class="f"><label>Peso frutto letto (kg)</label><input type="number" inputmode="decimal" value="'+wval+'" placeholder="'+ph+'" oninput="setW('+li+',this.value)"></div></div>';
-    bandsActive().forEach((x,i)=>{
+    html+='<div class="f"><label>Peso totale bacche (kg)</label><input type="number" inputmode="decimal" value="'+wval+'" placeholder="kg pesati" oninput="setW('+li+',this.value)"></div></div>';
+    html+='<div class="note" style="margin:4px 0 6px">Conteggio bacche per classe: opzionale (per bacche/pianta, peso medio bacca e qualit\u00e0).</div>';
+    BANDS.forEach((x,i)=>{
       html+='<div class="band"><div class="nm"><b>'+x.l+')</b> '+x.nm+'<span class="cfb" id="lcf'+li+'_'+i+'">'+coeffs[i]+'%</span></div>'+
         '<div class="ct"><button class="minus" onclick="lstep('+li+','+i+',-1)">\u2212</button>'+
         '<input class="val" id="lv'+li+'_'+i+'" type="number" inputmode="numeric" value="'+L.c[i]+'" oninput="setC('+li+','+i+',this.value)">'+
         '<button class="plus" onclick="lstep('+li+','+i+',1)">+</button></div></div>';
     });
-    html+='<div class="lout"><span class="k">Frutti \u00b7 Danno medio lettura</span><span class="v"><span id="lfr'+li+'">0</span> \u00b7 <span id="ldmq'+li+'">\u2014</span></span></div>';
+    html+='<div class="lout"><span class="k">kg/pianta <b id="lkg'+li+'">\u2014</b> \u00b7 bacche/pianta <b id="lbpp'+li+'">\u2014</b> \u00b7 peso bacca <b id="lpb'+li+'">\u2014</b> \u00b7 qualit\u00e0 <b id="ldmq'+li+'">\u2014</b></span></div>';
     div.innerHTML=html;box.appendChild(div);
   });
 }
 function setPl(li,v){letture[li].pl=parseFloat((v||'').replace(',','.'))||0;recompute();}
 function setW(li,v){letture[li].w=parseFloat((v||'').replace(',','.'))||0;recompute();}
 function setC(li,i,v){let n=parseInt(v,10);if(isNaN(n)||n<0)n=0;letture[li].c[i]=n;recompute();}
-function lstep(li,i,d){letture[li].c[i]=Math.max(0,letture[li].c[i]+d);
-  if(navigator.vibrate)navigator.vibrate(d>0?18:30);
+function lstep(li,i,d){letture[li].c[i]=Math.max(0,letture[li].c[i]+d);if(navigator.vibrate)navigator.vibrate(d>0?18:30);
   const e=document.getElementById('lv'+li+'_'+i);if(e)e.value=letture[li].c[i];recompute();}
-function addLettura(){letture.push({pl:10,c:bandsActive().map(()=>0),w:nv('peso')});renderLetture();recompute();
-  if(navigator.vibrate)navigator.vibrate(25);}
+function addLettura(){letture.push({pl:3,w:0,c:[0,0,0,0,0]});renderLetture();recompute();if(navigator.vibrate)navigator.vibrate(25);}
 function delLettura(li){letture.splice(li,1);renderLetture();recompute();}
 
 function buildLegend(){
   const box=document.getElementById('legend');box.innerHTML='';
-  LEGEND.forEach(tb=>{
-    const h=document.createElement('div');h.className='lgt';h.textContent=tb.t+'  ('+tb.cols+')';box.appendChild(h);
-    tb.rows.forEach(r=>{const d=document.createElement('div');d.className='lgrow';
-      d.innerHTML='<div class="top"><span class="cl">'+r[0]+'</span><span class="pc">'+r[1]+'</span></div><div class="desc">'+r[2]+'</div>';
-      box.appendChild(d);});
-  });
+  BANDS.forEach(x=>{const d=document.createElement('div');d.className='lgrow';
+    d.innerHTML='<div class="top"><span class="cl">'+x.l+') '+x.nm+'</span><span class="pc">'+x.cf+'%</span></div><div class="desc">'+x.d+'</div>';
+    box.appendChild(d);});
 }
 
 function recompute(){
-  const s=nv('sup'),x=nv('x'),y=nv('y'),k=nv('k');
-  const aha=(x>0&&y>0)?(10000/(x*y))*((100-k)/100):0;
-  const a=(x>0&&y>0)?(s/(x*y))*((100-k)/100):0;
-  setT('r_a',a?f(a,0):'\u2014'); setT('r_aha',aha?f(aha,0):'\u2014');
+  const s=nv('sup'),k=nv('k'),x=nv('x'),y=nv('y');
+  let aha=0,i=0;
+  if(x>0&&y>0){const dens=(MODE==='s')?(1/(x*y)):(2/(x*y)); aha=dens*10000*(100-k)/100;}
+  const sha=s/10000;
+  if(aha>0&&sha>0)i=aha*sha;
+  setT('r_a',i?f(i,0):'\u2014'); setT('r_aha',aha?f(aha,0):'\u2014');
+
   const bpot=nv('bpot'),peso=nv('peso');
-  const kgpot=bpot*peso, pot=a*kgpot/100, potha=aha*kgpot/100;
+  const kgpot=bpot*peso, pot=i*kgpot/100, potha=aha*kgpot/100;
   setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'\u2014');
-  setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
-  setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
+  setT('r_pot',(kgpot>0&&i>0)?f(pot,2)+' q.li':'\u2014'); setT('r_potha',(kgpot>0&&aha>0)?f(potha,2)+' q.li/ha':'\u2014');
 
-  let SA=0,SC=0,PL=0,KG=0;
+  let SP=0,Spres=0,SW=0; const qdan=[];
   letture.forEach((L,li)=>{
-    let sa=0,sc=0; L.c.forEach((n,i)=>{sa+=n;sc+=n*(coeffs[i]||0);});
-    const w=(L.w&&L.w>0)?L.w:peso;
-    const dm=sa>0?sc/sa:0;
-    setT('lfr'+li,sa); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
-    bandsActive().forEach((b,i)=>setT('lcf'+li+'_'+i,(coeffs[i]||0)+'%'));
-    SA+=sa; SC+=sc; PL+=(L.pl>0?L.pl:0); KG+=sa*w;
+    const pres=L.c.reduce((a,b)=>a+b,0);
+    const wt=(L.w>0)?L.w:0;                       // peso TOTALE pesato (kg)
+    let sc=0; L.c.forEach((n,j)=>sc+=n*(coeffs[j]||0));
+    const dq=pres>0?sc/pres:0;
+    const kgpp=(L.pl>0&&wt>0)?wt/L.pl:0;          // kg/pianta = peso totale / piante
+    const bpp_c=(L.pl>0&&pres>0)?pres/L.pl:0;
+    const pmb=(pres>0&&wt>0)?wt/pres:0;
+    setT('lkg'+li,kgpp>0?f(kgpp,3):'\u2014'); setT('lbpp'+li,bpp_c>0?f(bpp_c,1):'\u2014');
+    setT('lpb'+li,pmb>0?f(pmb,3):'\u2014'); setT('ldmq'+li,pres>0?f(dq,1)+'%':'\u2014');
+    BANDS.forEach((b,j)=>setT('lcf'+li+'_'+j,(coeffs[j]||0)+'%'));
+    SP+=(L.pl>0?L.pl:0); Spres+=pres; SW+=wt;
+    if(pres>0)qdan.push(dq);
   });
-  const dmq=SA>0?SC/SA:0, bott=PL>0?SA/PL:0, kmean=PL>0?KG/PL:0;
-  setT('q_n',letture.length); setT('q_frutti',SA);
-  setT('q_bott',SA>0?f(bott,2):'\u2014'); setT('q_dmq',SA>0?f(dmq,1)+'%':'\u2014');
+  const kgppT=SP>0?SW/SP:0;                        // kg/pianta mediato (dai pesi)
+  const bpp=(SP>0&&Spres>0)?Spres/SP:0;
+  const pmbT=(Spres>0&&SW>0)?SW/Spres:0;
+  const O=i*kgppT/100, Oha=aha*kgppT/100;
+  setT('q_n',letture.length); setT('q_pres',Spres); setT('q_bott',bpp>0?f(bpp,2):'\u2014');
+  setT('r_bott',bpp>0?f(bpp,2):'\u2014'); setT('r_kgott',kgppT>0?f(kgppT,3)+' kg':'\u2014');
+  setT('r_pmb',pmbT>0?f(pmbT,3)+' kg':'\u2014');
+  setT('r_ott',(kgppT>0&&i>0)?f(O,2)+' q.li':'\u2014'); setT('r_ottha',(kgppT>0&&aha>0)?f(Oha,2)+' q.li/ha':'\u2014');
 
-  const ott=a*kmean/100, ottha=aha*kmean/100;
-  setT('r_bott',SA>0?f(bott,2):'\u2014');
-  setT('r_kgott',SA>0?f(kmean,3)+' kg':'\u2014');
-  setT('r_ott',SA>0?f(ott,2)+' q.li':'\u2014');
-  setT('r_ottha',SA>0?f(ottha,2)+' q.li/ha':'\u2014');
-  setT('r_nlett',letture.length);
-  setT('r_dmq',SA>0?f(dmq,1)+'%':'\u2014');
+  const rawA=nv('assic'), rawD=nv('detr');
+  const Aha    = (UNITA==='part') ? (sha>0?rawA/sha:0) : rawA;   // sempre q.li/ha internamente
+  const detrHa = (UNITA==='part') ? (sha>0?rawD/sha:0) : rawD;
+  const baseHa = Aha>0 ? Aha : potha;            // base per ettaro
+  const Rha = Math.max(0, baseHa - detrHa);
+  setT('r_Rha', Rha>0? f(Rha,2)+' q.li/ha':'\u2014');
+  setT('r_R', (Rha>0&&sha>0)? f(Rha*sha,2)+' q.li':'\u2014');
+  // assicurata e detrazione in entrambe le unit\u00e0
+  setT('r_Aboth', rawA>0 ? (sha>0 ? f(Aha,2)+' q.li/ha \u00b7 '+f(Aha*sha,2)+' q.li' : (UNITA==='part'?f(rawA,2)+' q.li':f(rawA,2)+' q.li/ha')) : '\u2014');
+  setT('r_Dboth', rawD>0 ? (sha>0 ? f(detrHa,2)+' q.li/ha \u00b7 '+f(detrHa*sha,2)+' q.li' : (UNITA==='part'?f(rawD,2)+' q.li':f(rawD,2)+' q.li/ha')) : '\u2014');
 
-  const sup_ha=s/10000;
-  const rawA=nv('assic'), rawP=nv('pot_perito');
-  const A = (UNITA==='ha') ? rawA*sup_ha : rawA;       // totale partita
-  const ppIn = (UNITA==='ha') ? rawP*sup_ha : rawP;
-  const Pconf = ppIn>0 ? ppIn : (A>0?A:pot);
-  const R = A>0 ? Math.min(A,Pconf) : Pconf;
-  // assicurata in entrambe le unit\u00e0
-  let aStr='\u2014';
-  if(UNITA==='ha' && rawA>0) aStr=f(rawA,2)+' q.li/ha'+(sup_ha>0?(' \u00b7 '+f(A,2)+' q.li'):'');
-  else if(rawA>0) aStr=f(rawA,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(rawA/sup_ha,2)+' q.li/ha'):'');
-  setT('r_A',aStr);
-  // risarcibile in entrambe le unit\u00e0
-  setT('r_R',(R>0&&a>0)?(f(R,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(R/sup_ha,2)+' q.li/ha'):'')):'\u2014');
-
-  // detrazione: solo se confermo una potenziale piu bassa dell'assicurata
   const db=document.getElementById('detr_box');
-  if(A>0 && ppIn>0 && ppIn<A && sup_ha>0){
-    const dt=A-ppIn, dh=dt/sup_ha, dp=dt/A*100;
-    setT('detr_pct',f(dp,1)+'%'); setT('detr_ha',f(dh,2)+' q.li/ha'); setT('detr_tot',f(dt,2)+' q.li');
-    db.style.display='block';
+  if(detrHa>0 && baseHa>0){
+    setT('detr_pct',f(detrHa/baseHa*100,1)+'%'); setT('detr_ha',f(detrHa,2)+' q.li/ha');
+    setT('detr_tot',(sha>0)?f(detrHa*sha,2)+' q.li':'\u2014'); db.style.display='block';
   } else db.style.display='none';
 
-  if(SA>0 && R>0 && a>0){
-    const dq=Math.max(0,(R-ott)/R*100);
-    const dqu=dmq*(100-dq)/100;
+  const dmq=qdan.length>0?qdan.reduce((a,c)=>a+c,0)/qdan.length:0;
+  setT('q_dmq',qdan.length>0?f(dmq,1)+'%':'\u2014'); setT('r_dmq',qdan.length>0?f(dmq,1)+'%':'\u2014'); setT('r_nlett',letture.length);
+
+  if(kgppT>0 && Rha>0){
+    const aspHa=Math.max(0,Rha-Oha);
+    setT('r_aspha',f(aspHa,2)+' q.li/ha'); setT('r_asp',(sha>0)?f(aspHa*sha,2)+' q.li':'\u2014');
+    const dq=Math.max(0,(Rha-Oha)/Rha*100), dqu=dmq*(100-dq)/100;
     const rdq=Math.round(dq), rdqu=Math.round(dqu);
-    setT('r_dq',f(dq,1)+'% \u2192 '+rdq);
-    setT('r_dqu',f(dqu,1)+'% \u2192 '+rdqu);
+    setT('r_dq',f(dq,1)+'% \u2192 '+rdq); setT('r_dqu',f(dqu,1)+'% \u2192 '+rdqu);
     setT('r_dq2',rdq+'%'); setT('r_dqu2',rdqu+'%'); setT('r_tot',(rdq+rdqu)+'%');
-  } else {setT('r_dq','\u2014');setT('r_dqu','\u2014');setT('r_dq2','\u2014');setT('r_dqu2','\u2014');setT('r_tot','\u2014');}
+  } else {setT('r_aspha','\u2014');setT('r_asp','\u2014');setT('r_dq','\u2014');setT('r_dqu','\u2014');setT('r_dq2','\u2014');setT('r_dqu2','\u2014');setT('r_tot','\u2014');}
   saveWork();
 }
 
@@ -586,9 +525,9 @@ function asciiFix(s){return s
   .replace(/\u2019/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2018]/g,"'").replace(/\u2212/g,'-').replace(/\u2264/g,'<=').replace(/\u2265/g,'>=')
   .replace(/[^\x00-\x7F]/g,'');}
 function exportTxt(){
-  const g=id=>document.getElementById(id).value;
-  const t=id=>document.getElementById(id).textContent;
-  const L=['=== PERIZIA MELONE/COCOMERO (campo) ===','Export: '+new Date().toLocaleString('it-IT'),'',
+  const g=id=>document.getElementById(id).value, t=id=>document.getElementById(id).textContent;
+  const sesto = MODE==='s' ? ('singola interfila '+g('x')+' x piante '+g('y')) : ('binata centro-bine '+g('x')+' x piante '+g('y'));
+  const L=['=== PERIZIA POMODORO CONCENTRATO (campo) ===','Export: '+new Date().toLocaleString('it-IT'),'',
     'Certificato n.: '+(g('dat_cert')||'-'),
     'Data perizia: '+(itDate(g('dat_data'))||'-'),
     'Assicurato: '+(g('dat_assic')||'-'),
@@ -596,27 +535,24 @@ function exportTxt(){
     'Luogo/Foglio: '+(g('loc_foglio')||'-'),
     'Perito/i: '+(g('dat_periti')||'-'),
     'Coordinate: '+((g('loc_lat')&&g('loc_lon'))?(g('loc_lat')+', '+g('loc_lon')):'-'),'',
-    'Superficie '+g('sup')+' mq | file '+g('x')+' | fila '+g('y')+' | fallanze '+g('k')+'%',
-    'Piante partita (a): '+t('r_a')+' | Piante/ha: '+t('r_aha'),'',
-    'Frutti/pianta potenz.: '+g('bpot')+' | peso frutto pot. '+g('peso')+' kg',
-    'Prod. potenziale teorica: '+t('r_pot')+' | /ha: '+t('r_potha'),
-    'Potenziale confermato (P): '+(g('pot_perito')||'(=assicurata)')+' | Assicurata (A): '+(g('assic')||'-'),
-    'Produzione risarcibile (R): '+t('r_R')];
-  if(document.getElementById('detr_box').style.display!=='none')
-    L.push('DETRAZIONE: '+t('detr_pct')+' | '+t('detr_ha')+' | '+t('detr_tot'));
-  L.push('','-- LETTURE QUALITA ('+PRESETS[ACTIVE].label+') --');
-  letture.forEach((Lt,li)=>{
-    const cls=bandsActive().map((b,i)=>b.l+'='+Lt.c[i]).join(' ');
-    const w=(Lt.w&&Lt.w>0)?Lt.w:g('peso');
-    L.push('Lettura '+(li+1)+' (piante '+Lt.pl+', peso '+w+' kg): '+cls+' -> '+(t('ldmq'+li)||''));
-  });
-  L.push('Coefficienti: '+bandsActive().map((b,i)=>b.l+coeffs[i]).join(' '),
-    'TOTALE: frutti '+t('q_frutti')+' | frutti/pianta '+t('q_bott')+' | danno medio qualita '+t('q_dmq'),'',
-    '-- QUANTITA --',
-    'Frutti mercantili/pianta: '+t('r_bott')+' | kg/pianta ott.: '+t('r_kgott'),
-    'Prod. ottenibile: '+t('r_ott')+' | /ha: '+t('r_ottha'),'',
-    '=== RISULTATO ===',
-    'DANNO QUANTITA: '+t('r_dq'),'DANNO QUALITA (residuato): '+t('r_dqu'),'DANNO TOTALE: '+t('r_tot'));
+    'Superficie '+g('sup')+' mq | sesto '+sesto+' | fallanze '+g('k')+'%',
+    'Piante partita (i): '+t('r_a')+' | Piante/ha: '+t('r_aha'),'',
+    'Bacche/pianta potenz.: '+g('bpot')+' | peso bacca: '+g('peso')+' kg',
+    'Prod. potenziale: '+t('r_pot')+' | /ha: '+t('r_potha'),'',
+    '-- QUANTITA PRESENTE --',
+    'Bacche presenti/pianta: '+t('r_bott')+' | kg/pianta: '+t('r_kgott'),
+    'Ottenibile: '+t('r_ott')+' | /ha: '+t('r_ottha'),'',
+    '-- LIQUIDAZIONE --',
+    'Assicurata (A): '+t('r_Aboth')+' | Detrazione: '+t('r_Dboth'),
+    'Risarcibile R/ha: '+t('r_Rha')+' | R partita: '+t('r_R'),
+    'Asportato/ha: '+t('r_aspha')+' | partita: '+t('r_asp')];
+  if(document.getElementById('detr_box').style.display!=='none') L.push('Detrazione: '+t('detr_pct')+' | '+t('detr_ha')+' | '+t('detr_tot'));
+  L.push('','-- CAMPIONI (Concentrato) --');
+  letture.forEach((Lt,li)=>{const cls=BANDS.map((b,j)=>b.l+'='+Lt.c[j]).join(' ');
+    L.push('Camp.'+(li+1)+' (piante '+Lt.pl+', peso tot '+(Lt.w||0)+' kg): '+cls+' -> '+(t('ldmq'+li)||''));});
+  L.push('Coeff: '+BANDS.map((b,j)=>b.l+coeffs[j]).join(' '),
+    'Danno qualita medio: '+t('q_dmq'),'',
+    '=== RISULTATO ===','DANNO QUANTITA: '+t('r_dq'),'DANNO QUALITA (residuato): '+t('r_dqu'),'DANNO TOTALE: '+t('r_tot'));
   L.push('','App di proprieta di Zanardini Stefano - cod. 7313');
   const blob=new Blob([asciiFix(L.join('\n'))],{type:'text/plain;charset=utf-8'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);const fnAss=((g('dat_assic')||'perizia').trim().replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,''))||'perizia';
@@ -624,10 +560,9 @@ function exportTxt(){
   a.download='perizia_'+fnAss+'_'+fnData+'.txt';a.click();
 }
 function resetForm(){
-  ['sup','x','y','bpot','peso','assic','pot_perito','loc_lat','loc_lon','loc_foglio','dat_cert','dat_assic','dat_part','dat_periti'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});var _dd2=document.getElementById('dat_data');if(_dd2)_dd2.value=todayISO();
+  ['sup','x','y','bpot','peso','assic','detr','loc_lat','loc_lon','loc_foglio','dat_cert','dat_assic','dat_part','dat_periti'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});var _dd2=document.getElementById('dat_data');if(_dd2)_dd2.value=todayISO();
   const kk=document.getElementById('k');if(kk)kk.value='0';
-  coeffs=PRESETS[ACTIVE].bands.map(b=>b.cf);
-  letture=[{pl:10,c:bandsActive().map(()=>0),w:0}];
+  coeffs=BANDS.map(b=>b.cf); letture=[{pl:3,w:0,c:[0,0,0,0,0]}];
   renderCoeff();renderLetture();recompute();
 }
 function resetAll(){
@@ -635,7 +570,7 @@ function resetAll(){
   CURID=null;resetForm();saveWork();
 }
 
-loadWork();renderCoeff();renderLetture();buildLegend();setLocType(LOCTYPE);setUnitA(UNITA);renderArch();
+loadWork();renderCoeff();renderLetture();buildLegend();setLocType(LOCTYPE);setUnitA(UNITA);setMode(MODE);renderArch();
 var _dd0=document.getElementById('dat_data');if(_dd0&&!_dd0.value)_dd0.value=todayISO();
 document.querySelector('.foot').style.display='flex';
 let _wl=null;
