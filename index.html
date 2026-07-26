@@ -183,6 +183,8 @@
     <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
+    <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
+    <div class="note">Se lasci vuoto "Frutti/pianta potenz.", uso questo valore dal campione (presenti + persi).</div>
     <div class="tabsel" style="margin-top:8px">
       <button id="uA_part" class="on" onclick="setUnitA('part')">Dato a partita</button>
       <button id="uA_ha" onclick="setUnitA('ha')">Dato a q.li/ha</button>
@@ -210,6 +212,7 @@
     <div class="res"><span class="k">Prod. ottenibile (partita)</span><span class="v" id="r_ott">&#8212;</span></div>
     <div class="res"><span class="k">Prod. ottenibile / ha</span><span class="v" id="r_ottha">&#8212;</span></div>
     <div class="res"><span class="k">Produzione risarcibile (R)</span><span class="v" id="r_R" style="font-size:16px;white-space:normal;text-align:right">&#8212;</span></div>
+    <div class="res"><span class="k">Meloni persi (totale campioni)</span><span class="v" id="r_persi">0</span></div>
     <div class="res hi"><span class="k">DANNO QUANTIT&#192;</span><span class="v" id="r_dq">&#8212;</span></div>
   </div>
 
@@ -320,7 +323,8 @@ const LEGEND=[
 
 let ACTIVE='A_cm';
 let coeffs=PRESETS[ACTIVE].bands.map(b=>b.cf);
-let letture=[{pl:10,c:[0,0,0,0,0],w:0}];
+let letture=[{pl:10,c:[0,0,0,0,0],w:0,persi:0}];
+function normLet(){letture.forEach(L=>{if(L.persi==null)L.persi=0;if(!Array.isArray(L.c))L.c=[0,0,0,0,0];});}
 let UNITA='part';
 const WORKKEY='melone_work_v1', ARCHKEY='melone_arch_v1';
 let LOCTYPE='coord', CURID=null;
@@ -454,7 +458,7 @@ function pickTable(key){
   if(hasCounts && !confirm('Cambiare tabella azzera le letture in corso. Procedere?'))return;
   ACTIVE=key;
   coeffs=PRESETS[key].bands.map(b=>b.cf);
-  letture=[{pl:10,c:bandsActive().map(()=>0),w:0}];
+  letture=[{pl:10,c:bandsActive().map(()=>0),w:0,persi:0}];
   for(const k in PRESETS){const b=document.getElementById('ts_'+k);if(b)b.classList.toggle('on',k===key);}
   renderCoeff();renderLetture();recompute();
 }
@@ -473,6 +477,7 @@ function renderCoeff(){
 function setCoeff(i,v){coeffs[i]=parseFloat((v||'').replace(',','.'))||0;recompute();}
 
 function renderLetture(){
+  normLet();
   const box=document.getElementById('letture');box.innerHTML='';
   const pesoPot=nv('peso');
   letture.forEach((L,li)=>{
@@ -490,6 +495,10 @@ function renderLetture(){
         '<input class="val" id="lv'+li+'_'+i+'" type="number" inputmode="numeric" value="'+L.c[i]+'" oninput="setC('+li+','+i+',this.value)">'+
         '<button class="plus" onclick="lstep('+li+','+i+',1)">+</button></div></div>';
     });
+    html+='<div class="band" style="border-color:#a81818"><div class="nm"><b>P)</b> Meloni persi (asportati/distrutti)<span class="cfb" style="background:#a81818">quantit\u00e0</span></div>'+
+      '<div class="ct"><button class="minus" onclick="pstep('+li+',-1)">\u2212</button>'+
+      '<input class="val" id="lp'+li+'" type="number" inputmode="numeric" value="'+(L.persi||0)+'" oninput="setPersi('+li+',this.value)">'+
+      '<button class="plus" onclick="pstep('+li+',1)">+</button></div></div>';
     html+='<div class="lout"><span class="k">Frutti \u00b7 Danno medio lettura</span><span class="v"><span id="lfr'+li+'">0</span> \u00b7 <span id="ldmq'+li+'">\u2014</span></span></div>';
     div.innerHTML=html;box.appendChild(div);
   });
@@ -497,10 +506,14 @@ function renderLetture(){
 function setPl(li,v){letture[li].pl=parseFloat((v||'').replace(',','.'))||0;recompute();}
 function setW(li,v){letture[li].w=parseFloat((v||'').replace(',','.'))||0;recompute();}
 function setC(li,i,v){let n=parseInt(v,10);if(isNaN(n)||n<0)n=0;letture[li].c[i]=n;recompute();}
+function setPersi(li,v){let n=parseInt(v,10);if(isNaN(n)||n<0)n=0;letture[li].persi=n;recompute();}
+function pstep(li,d){letture[li].persi=Math.max(0,(letture[li].persi||0)+d);
+  if(navigator.vibrate)navigator.vibrate(d>0?18:30);
+  const e=document.getElementById('lp'+li);if(e)e.value=letture[li].persi;recompute();}
 function lstep(li,i,d){letture[li].c[i]=Math.max(0,letture[li].c[i]+d);
   if(navigator.vibrate)navigator.vibrate(d>0?18:30);
   const e=document.getElementById('lv'+li+'_'+i);if(e)e.value=letture[li].c[i];recompute();}
-function addLettura(){letture.push({pl:10,c:bandsActive().map(()=>0),w:nv('peso')});renderLetture();recompute();
+function addLettura(){letture.push({pl:10,c:bandsActive().map(()=>0),w:nv('peso'),persi:0});renderLetture();recompute();
   if(navigator.vibrate)navigator.vibrate(25);}
 function delLettura(li){letture.splice(li,1);renderLetture();recompute();}
 
@@ -519,24 +532,31 @@ function recompute(){
   const aha=(x>0&&y>0)?(10000/(x*y))*((100-k)/100):0;
   const a=(x>0&&y>0)?(s/(x*y))*((100-k)/100):0;
   setT('r_a',a?f(a,0):'\u2014'); setT('r_aha',aha?f(aha,0):'\u2014');
-  const bpot=nv('bpot'),peso=nv('peso');
-  const kgpot=bpot*peso, pot=a*kgpot/100, potha=aha*kgpot/100;
-  setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'\u2014');
-  setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
-  setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
+  const peso=nv('peso');
 
-  let SA=0,SC=0,PL=0,KG=0;
+  let SA=0,SC=0,PL=0,KG=0,SPER=0;
   letture.forEach((L,li)=>{
     let sa=0,sc=0; L.c.forEach((n,i)=>{sa+=n;sc+=n*(coeffs[i]||0);});
     const w=(L.w&&L.w>0)?L.w:peso;
     const dm=sa>0?sc/sa:0;
     setT('lfr'+li,sa); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
     bandsActive().forEach((b,i)=>setT('lcf'+li+'_'+i,(coeffs[i]||0)+'%'));
-    SA+=sa; SC+=sc; PL+=(L.pl>0?L.pl:0); KG+=sa*w;
+    SA+=sa; SC+=sc; PL+=(L.pl>0?L.pl:0); KG+=sa*w; SPER+=(L.persi>0?L.persi:0);
   });
+  const totFr=SA+SPER;                                   // frutti totali del campione (presenti + persi)
   const dmq=SA>0?SC/SA:0, bott=PL>0?SA/PL:0, kmean=PL>0?KG/PL:0;
+  const bppPot=PL>0?totFr/PL:0;                          // frutti/pianta potenziale (presenti + persi)
   setT('q_n',letture.length); setT('q_frutti',SA);
   setT('q_bott',SA>0?f(bott,2):'\u2014'); setT('q_dmq',SA>0?f(dmq,1)+'%':'\u2014');
+
+  // potenziale: frutti/pianta a mano, altrimenti dal campione (presenti + persi)
+  const bpotIn=nv('bpot');
+  const bpot=bpotIn>0?bpotIn:bppPot;
+  const kgpot=bpot*peso, pot=a*kgpot/100, potha=aha*kgpot/100;
+  setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'\u2014');
+  setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
+  setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
+  setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
 
   const ott=a*kmean/100, ottha=aha*kmean/100;
   setT('r_bott',SA>0?f(bott,2):'\u2014');
@@ -552,15 +572,12 @@ function recompute(){
   const ppIn = (UNITA==='ha') ? rawP*sup_ha : rawP;
   const Pconf = ppIn>0 ? ppIn : (A>0?A:pot);
   const R = A>0 ? Math.min(A,Pconf) : Pconf;
-  // assicurata in entrambe le unit\u00e0
   let aStr='\u2014';
   if(UNITA==='ha' && rawA>0) aStr=f(rawA,2)+' q.li/ha'+(sup_ha>0?(' \u00b7 '+f(A,2)+' q.li'):'');
   else if(rawA>0) aStr=f(rawA,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(rawA/sup_ha,2)+' q.li/ha'):'');
   setT('r_A',aStr);
-  // risarcibile in entrambe le unit\u00e0
   setT('r_R',(R>0&&a>0)?(f(R,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(R/sup_ha,2)+' q.li/ha'):'')):'\u2014');
 
-  // detrazione: solo se confermo una potenziale piu bassa dell'assicurata
   const db=document.getElementById('detr_box');
   if(A>0 && ppIn>0 && ppIn<A && sup_ha>0){
     const dt=A-ppIn, dh=dt/sup_ha, dp=dt/A*100;
@@ -568,8 +585,9 @@ function recompute(){
     db.style.display='block';
   } else db.style.display='none';
 
-  if(SA>0 && R>0 && a>0){
-    const dq=Math.max(0,(R-ott)/R*100);
+  // DANNO QUANTITA = persi / (presenti + persi), letto dal campione
+  if(totFr>0 && a>0){
+    const dq=Math.max(0,SPER/totFr*100);
     const dqu=dmq*(100-dq)/100;
     const rdq=Math.round(dq), rdqu=Math.round(dqu);
     setT('r_dq',f(dq,1)+'% \u2192 '+rdq);
@@ -627,7 +645,7 @@ function resetForm(){
   ['sup','x','y','bpot','peso','assic','pot_perito','loc_lat','loc_lon','loc_foglio','dat_cert','dat_assic','dat_part','dat_periti'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});var _dd2=document.getElementById('dat_data');if(_dd2)_dd2.value=todayISO();
   const kk=document.getElementById('k');if(kk)kk.value='0';
   coeffs=PRESETS[ACTIVE].bands.map(b=>b.cf);
-  letture=[{pl:10,c:bandsActive().map(()=>0),w:0}];
+  letture=[{pl:10,c:bandsActive().map(()=>0),w:0,persi:0}];
   renderCoeff();renderLetture();recompute();
 }
 function resetAll(){
