@@ -585,9 +585,9 @@ function recompute(){
     db.style.display='block';
   } else db.style.display='none';
 
-  // DANNO QUANTITA = persi / (presenti + persi), letto dal campione
-  if(totFr>0 && a>0){
-    const dq=Math.max(0,SPER/totFr*100);
+  // DANNO QUANTITA = (R - ottenibile)/R, sui q.li assicurati/risarcibili
+  if(R>0 && a>0 && (SA>0 || SPER>0)){
+    const dq=Math.max(0,(R-ott)/R*100);
     const dqu=dmq*(100-dq)/100;
     const rdq=Math.round(dq), rdqu=Math.round(dqu);
     setT('r_dq',f(dq,1)+'% \u2192 '+rdq);
