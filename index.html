@@ -403,11 +403,13 @@ function itDate(iso){if(!iso)return '';const x=(''+iso).split('-');return x.leng
 function dannoTxt(){return (document.getElementById('r_tot').textContent||'').replace('\u2014','');}
 function salvaPerizia(){
   const a=loadArch();
-  if(CURID){const e=a.find(x=>x.id===CURID);
-    if(e){e.st=getCalcState();e.loc=locLabel();e.loctype=LOCTYPE;e.lat=geoLat();e.lon=geoLon();e.danno=dannoTxt();storeArch(a);renderArch();alert('Perizia aggiornata in archivio.');return;}}
   const _assicNm=(document.getElementById('dat_assic').value||'').trim();
   const _dperiz=(document.getElementById('dat_data').value||todayISO());
   const dft=(_assicNm||'Perizia')+' - '+itDate(_dperiz);
+  if(CURID){const e=a.find(x=>x.id===CURID);
+    if(e){
+      if(_assicNm) e.name=dft;
+      e.st=getCalcState();e.loc=locLabel();e.loctype=LOCTYPE;e.lat=geoLat();e.lon=geoLon();e.danno=dannoTxt();storeArch(a);renderArch();alert('Perizia aggiornata in archivio.');return;}}
   const name=prompt('Nome perizia:',dft);if(name===null)return;
   const id='m'+Date.now();
   a.unshift({id:id,name:(name||dft),date:_dperiz,loc:locLabel(),loctype:LOCTYPE,lat:geoLat(),lon:geoLon(),danno:dannoTxt(),st:getCalcState()});
@@ -570,8 +572,8 @@ function recompute(){
   const rawA=nv('assic'), rawP=nv('pot_perito');
   const A = (UNITA==='ha') ? rawA*sup_ha : rawA;       // totale partita
   const ppIn = (UNITA==='ha') ? rawP*sup_ha : rawP;
-  const Pconf = ppIn>0 ? ppIn : (A>0?A:pot);
-  const R = A>0 ? Math.min(A,Pconf) : Pconf;
+  const Pconf = ppIn>0 ? ppIn : (A>0?A:pot);           // potenziale: la tua conferma se la scrivi, altrimenti segue l'assicurata
+  const R = A>0 ? Math.min(A,Pconf) : Pconf;           // risarcibile: quello che scrivi tu (assicurata), o il piu basso se tu stesso confermi un potenziale minore
   let aStr='\u2014';
   if(UNITA==='ha' && rawA>0) aStr=f(rawA,2)+' q.li/ha'+(sup_ha>0?(' \u00b7 '+f(A,2)+' q.li'):'');
   else if(rawA>0) aStr=f(rawA,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(rawA/sup_ha,2)+' q.li/ha'):'');
