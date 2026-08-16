@@ -183,9 +183,12 @@
     <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
-    <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
     <div class="res"><span class="k">Frutti reali contati (pres.+persi)</span><span class="v" id="r_frreali">0</span></div>
-    <div class="res"><span class="k">Frutti potenziali (partita)</span><span class="v" id="r_frpot">&#8212;</span></div>
+    <div class="lgt" style="margin-top:10px">Potenziale da campione (solo dati di lettura)</div>
+    <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
+    <div class="res"><span class="k">kg/pianta da campione</span><span class="v" id="r_kgpotc">&#8212;</span></div>
+    <div class="res"><span class="k">Prod. potenziale da campione</span><span class="v" id="r_potc">&#8212;</span></div>
+    <div class="res"><span class="k">Prod. potenziale da campione / ha</span><span class="v" id="r_potcha">&#8212;</span></div>
     <div class="note">Se lasci vuoto "Frutti/pianta potenz.", uso questo valore dal campione (presenti + persi).</div>
     <div class="tabsel" style="margin-top:8px">
       <button id="uA_part" class="on" onclick="setUnitA('part')">Dato a partita</button>
@@ -522,7 +525,7 @@ function renderLetture(){
       '<div class="ct"><button class="minus" onclick="pstep('+li+',-1)">\u2212</button>'+
       '<input class="val" id="lp'+li+'" type="number" inputmode="numeric" value="'+(L.persi||0)+'" oninput="setPersi('+li+',this.value)">'+
       '<button class="plus" onclick="pstep('+li+',1)">+</button></div></div>';
-    html+='<div class="lout"><span class="k">Frutti \u00b7 Danno medio lettura</span><span class="v"><span id="lfr'+li+'">0</span> \u00b7 <span id="ldmq'+li+'">\u2014</span></span></div>';
+    html+='<div class="lout"><span class="k">Reali contati <b id="lfr'+li+'">0</b> \u00b7 Potenziali (+persi) <b id="lpot'+li+'">0</b> \u00b7 Danno <b id="ldmq'+li+'">\u2014</b></span></div>';
     div.innerHTML=html;box.appendChild(div);
   });
 }
@@ -567,7 +570,7 @@ function recompute(){
     let sa=0,sc=0; L.c.forEach((n,i)=>{sa+=n;sc+=n*(coeffs[i]||0);});
     const w=(L.w&&L.w>0)?L.w:peso;
     const dm=sa>0?sc/sa:0;
-    setT('lfr'+li,sa); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
+    setT('lfr'+li,sa); setT('lpot'+li,sa+(L.persi>0?L.persi:0)); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
     bandsActive().forEach((b,i)=>setT('lcf'+li+'_'+i,(coeffs[i]||0)+'%'));
     SA+=sa; SC+=sc; PL+=(L.pl>0?L.pl:0); KG+=sa*w; SPER+=(L.persi>0?L.persi:0);
   });
@@ -586,7 +589,10 @@ function recompute(){
   setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
   setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
   setT('r_frreali',totFr);
-  setT('r_frpot',(bpot>0&&a>0)?f(bpot*a,0):'\u2014');
+  const kgpotc=bppPot*peso, potc=a*kgpotc/100, potcha=aha*kgpotc/100;
+  setT('r_kgpotc',kgpotc?f(kgpotc,3)+' kg':'\u2014');
+  setT('r_potc',potc?f(potc,2)+' q.li':'\u2014');
+  setT('r_potcha',potcha?f(potcha,2)+' q.li/ha':'\u2014');
 
   const ott=a*kmean/100, ottha=aha*kmean/100;
   setT('r_bott',SA>0?f(bott,2):'\u2014');
