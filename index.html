@@ -183,6 +183,8 @@
     <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
+    <div class="res" style="border-top:1.5px dashed #ccc4ae;padding-top:8px"><span class="k">Frutti/pianta necessari (da assicurata, informativo)</span><span class="v" id="r_frnec">&#8212;</span></div>
+    <div class="note">Solo calcolo esplorativo: dato il peso sopra e l'assicurata scritta sotto, quanti frutti/pianta servirebbero. NON influisce sul potenziale confermato n&#233; sul danno.</div>
     <div class="lgt" style="margin-top:10px">Potenziale da campione (solo dati di lettura)</div>
     <div class="res"><span class="k">Frutti reali contati (pres.+persi)</span><span class="v" id="r_frreali">0</span></div>
     <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
@@ -218,7 +220,7 @@
     <div class="res"><span class="k">Prod. ottenibile (partita)</span><span class="v" id="r_ott">&#8212;</span></div>
     <div class="res"><span class="k">Prod. ottenibile / ha</span><span class="v" id="r_ottha">&#8212;</span></div>
     <div class="res"><span class="k">Produzione risarcibile (R)</span><span class="v" id="r_R" style="font-size:16px;white-space:normal;text-align:right">&#8212;</span></div>
-    <div class="res"><span class="k">Meloni persi (totale campioni)</span><span class="v" id="r_persi">0</span></div>
+    <div class="res"><span class="k">Frutti persi (totale campioni)</span><span class="v" id="r_persi">0</span></div>
     <div class="res hi"><span class="k">DANNO QUANTIT&#192;</span><span class="v" id="r_dq">&#8212;</span></div>
   </div>
 
@@ -523,7 +525,7 @@ function renderLetture(){
         '<input class="val" id="lv'+li+'_'+i+'" type="number" inputmode="numeric" value="'+L.c[i]+'" oninput="setC('+li+','+i+',this.value)">'+
         '<button class="plus" onclick="lstep('+li+','+i+',1)">+</button></div></div>';
     });
-    html+='<div class="band" style="border-color:#a81818"><div class="nm"><b>P)</b> Meloni persi (asportati/distrutti)<span class="cfb" style="background:#a81818">quantit\u00e0</span></div>'+
+    html+='<div class="band" style="border-color:#a81818"><div class="nm"><b>P)</b> Frutti persi (asportati/distrutti)<span class="cfb" style="background:#a81818">quantit\u00e0</span></div>'+
       '<div class="ct"><button class="minus" onclick="pstep('+li+',-1)">\u2212</button>'+
       '<input class="val" id="lp'+li+'" type="number" inputmode="numeric" value="'+(L.persi||0)+'" oninput="setPersi('+li+',this.value)">'+
       '<button class="plus" onclick="pstep('+li+',1)">+</button></div></div>';
@@ -590,6 +592,13 @@ function recompute(){
   setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'\u2014');
   setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
   setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
+  // calcolo esplorativo, staccato: frutti/pianta necessari dato peso+assicurata (NON tocca bpot/Pconf/R)
+  {
+    const rawA_prev=nv('assic'), sup_ha_prev=s/10000;
+    const A_prev=(UNITA==='ha')?rawA_prev*sup_ha_prev:rawA_prev;
+    const frnec=(peso>0 && A_prev>0 && a>0) ? ((A_prev*100/a)/peso) : 0;
+    setT('r_frnec', frnec>0 ? f(frnec,2) : '\u2014');
+  }
   setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
   setT('r_frreali',totFr);
   setT('r_pmc',pesoCampione>0?f(pesoCampione,3)+' kg':'\u2014');
