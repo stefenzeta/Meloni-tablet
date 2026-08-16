@@ -243,6 +243,7 @@
       <button id="ts_A_sb" onclick="pickTable('A_sb')">Tab. A<br>Sugar Baby</button>
       <button id="ts_C_co" onclick="pickTable('C_co')">Tab. C<br>Cocomeri</button>
       <button id="ts_C_me" onclick="pickTable('C_me')">Tab. C<br>Meloni/SB/Mini</button>
+      <button id="ts_A_czz" onclick="pickTable('A_czz')">Tab. A<br>Cetrioli/Zucca/Zucchine</button>
     </div>
     <div class="note" id="tabsub"></div>
   </div>
@@ -271,6 +272,10 @@
   <div class="box">
     <h2>Tabelle di liquidazione</h2>
     <div class="note" style="margin:-4px 0 4px">Active Raccolto, Generali/Cattolica &#8212; ed. 20.02.2026. Danno di qualit&#224; calcolato sul prodotto residuo (Art. 13.3).</div>
+    <div class="tabsel" id="leggrp">
+      <button id="lg_cm" class="on" onclick="pickLegGroup('cm')">Cocomeri / Meloni</button>
+      <button id="lg_czz" onclick="pickLegGroup('czz')">Cetrioli / Zucca / Zucchine</button>
+    </div>
     <div id="legend"></div>
     <div class="lgnote">In tutte le tabelle: i frutti <b>persi, distrutti o con marcescenza/alterazioni</b> da eventi assicurati (non destinabili a trasformazione) &#8594; valutati <b>solo agli effetti del danno di quantit&#224;</b>.</div>
   </div>
@@ -299,27 +304,40 @@ const PRESETS={
   C_co:{label:'Tab. C Coco',sub:'Tab. C \u2014 liquidazione, colonna Cocomeri',
     bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:20},{l:'c',nm:'Cat. c',cf:50},{l:'d',nm:'Cat. d',cf:85}]},
   C_me:{label:'Tab. C Mel',sub:'Tab. C \u2014 liquidazione, colonna Meloni, Cocomeri Sugar Baby, Cocomeri Mini',
-    bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:30},{l:'c',nm:'Cat. c',cf:60},{l:'d',nm:'Cat. d',cf:85}]}
+    bands:[{l:'a',nm:'Cat. a',cf:0},{l:'b',nm:'Cat. b',cf:30},{l:'c',nm:'Cat. c',cf:60},{l:'d',nm:'Cat. d',cf:85}]},
+  A_czz:{label:'Tab. A CZZ',sub:'Tab. A \u2014 Cetrioli, Zucche e Zucchine \u2014 tutte le avversit\u00e0',
+    bands:[{l:'a',nm:'Illesi',cf:0},{l:'b',nm:'Lievi',cf:10},{l:'c',nm:'Medie',cf:25},{l:'d',nm:'Gravi',cf:45},{l:'e',nm:'Molto gravi',cf:75}]}
 };
 const LEGEND=[
- {t:'Tab. A \u2014 Cocomeri (escluso Sugar Baby) e Meloni',cols:'% danno',rows:[
+ {t:'Tab. A \u2014 Cocomeri (escluso Sugar Baby) e Meloni',cols:'% danno',group:'cm',rows:[
    ['a) Illesi','0','illesi; qualche incisione all\u2019epicarpo; decolorazioni lievi dell\u2019epicarpo'],
    ['b) Lievi','30','pi\u00f9 incisioni all\u2019epicarpo; qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
    ['c) Medie','55','pi\u00f9 incisioni medie al mesocarpo; deformazioni medie; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
    ['d) Gravi','80','qualche incisione profonda al mesocarpo; deformazioni gravi; bruciature notevoli dell\u2019epicarpo'],
    ['e) Molto gravi','90','deformazioni molto gravi']]},
- {t:'Tab. A \u2014 Cocomeri Sugar Baby e simili',cols:'% danno',rows:[
+ {t:'Tab. A \u2014 Cocomeri Sugar Baby e simili',cols:'% danno',group:'cm',rows:[
    ['a) Illesi','0','illesi; qualche incisione all\u2019epicarpo; decolorazioni lievi dell\u2019epicarpo'],
    ['b) Lievi','10','pi\u00f9 incisioni all\u2019epicarpo; decolorazioni medie dell\u2019epicarpo; bruciature lievi dell\u2019epicarpo'],
    ['c) Medie','40','qualche incisione lieve al mesocarpo; deformazioni leggere; decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
    ['d) Gravi','80','qualche incisione media al mesocarpo; deformazioni medie; bruciature notevoli dell\u2019epicarpo'],
    ['e) Molto gravi','90','qualche incisione profonda al mesocarpo; deformazioni gravi']]},
- {t:'Tab. C \u2014 Cocomeri e Meloni (liquidazione)',cols:'Coco \u00b7 Mel/SB/Mini',rows:[
-   ['a)','0 \u00b7 0','I frutti di questa classe di danno devono essere di qualit\u00e0 superiore o buona. Devono essere ben formati, presentare il peso (minimo 1,5 Kg) e la colorazione tipici della Variet\u00e0.<br>Fanno parte anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano un lieve difetto di forma, un lieve difetto di sviluppo, un lieve difetto di colorazione per la parte pi\u00f9 chiara che \u00e8 stata a contatto col suolo, piccole fenditure superficiali nella buccia (epicarpo) non superiori a:<br>\u2022 2 cm di lunghezza per difetti di forma allungata (1 cm per i meloni e minicocomeri)<br>\u2022 1,0 cm\u00b2 di superficie totale per gli altri difetti.'],
-   ['b)','20 \u00b7 30','I frutti di questa classe devono presentare la forma, il peso non inferiore kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nella precedente classe a). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 4 cm di lunghezza per difetti di forma allungata; (2 cm per il melone e minicocomeri)<br>\u2022 2,5 cm\u00b2 di superficie totale per gli altri difetti; (2 cm\u00b2 per il melone)<br>\u2022 0,75 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>\u2022 0,25 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
-   ['c)','50 \u00b7 60','I frutti di questa classe devono presentare la forma, il peso non inferiore a kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nelle precedenti classi a) e b). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 6 cm di lunghezza per difetti di forma allungata; (4 cm per il melone e minicocomeri)<br>\u2022 5,0 cm\u00b2 di superficie totale per gli altri difetti; (3 cm\u00b2 per il melone)<br>\u2022 1,5 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo;<br>\u2022 0,50 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
-   ['d)','85 \u00b7 85','I frutti di questa classe devono presentare la forma, il calibro e la colorazione tipici della Variet\u00e0, ma di qualit\u00e0 tale da non poter rientrare nelle precedenti classi: a), b) e c), causa gli eventi atmosferici coperti da garanzia.']]}
+ {t:'Tab. C \u2014 SOLO COCOMERI (liquidazione)',cols:'% danno',group:'cm',rows:[
+   ['a)','0','I frutti di questa classe di danno devono essere di qualit\u00e0 superiore o buona. Devono essere ben formati, presentare il peso (minimo 1,5 Kg) e la colorazione tipici della Variet\u00e0.<br>Fanno parte anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano un lieve difetto di forma, un lieve difetto di sviluppo, un lieve difetto di colorazione per la parte pi\u00f9 chiara che \u00e8 stata a contatto col suolo, piccole fenditure superficiali nella buccia (epicarpo) non superiori a:<br>\u2022 2 cm di lunghezza per difetti di forma allungata<br>\u2022 1,0 cm\u00b2 di superficie totale per gli altri difetti.'],
+   ['b)','20','I frutti di questa classe devono presentare la forma, il peso non inferiore kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nella precedente classe a). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 4 cm di lunghezza per difetti di forma allungata<br>\u2022 2,5 cm\u00b2 di superficie totale per gli altri difetti<br>\u2022 0,75 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo<br>\u2022 0,25 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
+   ['c)','50','I frutti di questa classe devono presentare la forma, il peso non inferiore a kg 1 e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nelle precedenti classi a) e b). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 6 cm di lunghezza per difetti di forma allungata<br>\u2022 5,0 cm\u00b2 di superficie totale per gli altri difetti<br>\u2022 1,5 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo<br>\u2022 0,50 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
+   ['d)','85','I frutti di questa classe devono presentare la forma, il calibro e la colorazione tipici della Variet\u00e0, ma di qualit\u00e0 tale da non poter rientrare nelle precedenti classi: a), b) e c), causa gli eventi atmosferici coperti da garanzia.']]},
+ {t:'Tab. C \u2014 SOLO MELONI, Cocomeri Sugar Baby, Cocomeri Mini (liquidazione)',cols:'% danno',group:'cm',rows:[
+   ['a)','0','I frutti di questa classe di danno devono essere di qualit\u00e0 superiore o buona. Devono essere ben formati, presentare il peso e la colorazione tipici della Variet\u00e0.<br>Fanno parte anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano un lieve difetto di forma, un lieve difetto di sviluppo, un lieve difetto di colorazione per la parte pi\u00f9 chiara che \u00e8 stata a contatto col suolo, piccole fenditure superficiali nella buccia (epicarpo) non superiori a:<br>\u2022 1 cm di lunghezza per difetti di forma allungata (meloni e minicocomeri)<br>\u2022 1,0 cm\u00b2 di superficie totale per gli altri difetti.'],
+   ['b)','30','I frutti di questa classe devono presentare la forma, il peso e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nella precedente classe a). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 2 cm di lunghezza per difetti di forma allungata (melone e minicocomeri)<br>\u2022 2,0 cm\u00b2 di superficie totale per gli altri difetti (melone)<br>\u2022 0,75 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo<br>\u2022 0,25 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
+   ['c)','60','I frutti di questa classe devono presentare la forma, il peso e la colorazione tipici della Variet\u00e0, ma tali da non poter rientrare nelle precedenti classi a) e b). Sono ammessi anche i frutti che, a seguito degli eventi atmosferici coperti da garanzia, presentano difetti di forma, difetti di sviluppo, difetti di colorazione, difetti della buccia (epicarpo) non superiori a:<br>\u2022 4 cm di lunghezza per difetti di forma allungata (melone e minicocomeri)<br>\u2022 3,0 cm\u00b2 di superficie totale per gli altri difetti (melone)<br>\u2022 1,5 cm\u00b2 di superficie totale per le ammaccature, che possono essere decolorate senza necrosi dell\u2019epicarpo<br>\u2022 0,50 cm\u00b2 di superficie totale per le ammaccature interessanti il mesocarpo con necrosi dell\u2019epicarpo.'],
+   ['d)','85','I frutti di questa classe devono presentare la forma, il calibro e la colorazione tipici della Variet\u00e0, ma di qualit\u00e0 tale da non poter rientrare nelle precedenti classi: a), b) e c), causa gli eventi atmosferici coperti da garanzia.']]}
 ];
+LEGEND.push({t:'Tab. A \u2014 Cetrioli, Zucche e Zucchine',cols:'% danno',group:'czz',rows:[
+   ['a) Illesi','0','illesi; segni di percossa; qualche incisione all\u2019epicarpo; placche di rugginosit\u00e0, strofinamenti, decolorazioni e bruciature lievi dell\u2019epicarpo'],
+   ['b) Lievi','10','plurime incisioni all\u2019epicarpo'],
+   ['c) Medie','25','incisioni lievi al mesocarpo; deformazioni leggere; placche di rugginosit\u00e0, strofinamenti, decolorazioni medie dell\u2019epicarpo'],
+   ['d) Gravi','45','incisioni medie al mesocarpo; deformazioni medie; placche di rugginosit\u00e0, strofinamenti e decolorazioni notevoli dell\u2019epicarpo; bruciature medie dell\u2019epicarpo'],
+   ['e) Molto gravi','75','incisioni profonde al mesocarpo; deformazioni gravi o molto gravi; bruciature notevoli dell\u2019epicarpo']]});
 
 let ACTIVE='A_cm';
 let coeffs=PRESETS[ACTIVE].bands.map(b=>b.cf);
@@ -519,9 +537,14 @@ function addLettura(){letture.push({pl:10,c:bandsActive().map(()=>0),w:nv('peso'
   if(navigator.vibrate)navigator.vibrate(25);}
 function delLettura(li){letture.splice(li,1);renderLetture();recompute();}
 
+let LEGGRP='cm';
+function pickLegGroup(g){LEGGRP=g;
+  document.getElementById('lg_cm').classList.toggle('on',g==='cm');
+  document.getElementById('lg_czz').classList.toggle('on',g==='czz');
+  buildLegend();}
 function buildLegend(){
   const box=document.getElementById('legend');box.innerHTML='';
-  LEGEND.forEach(tb=>{
+  LEGEND.filter(tb=>tb.group===LEGGRP).forEach(tb=>{
     const h=document.createElement('div');h.className='lgt';h.textContent=tb.t+'  ('+tb.cols+')';box.appendChild(h);
     tb.rows.forEach(r=>{const d=document.createElement('div');d.className='lgrow';
       d.innerHTML='<div class="top"><span class="cl">'+r[0]+'</span><span class="pc">'+r[1]+'</span></div><div class="desc">'+r[2]+'</div>';
