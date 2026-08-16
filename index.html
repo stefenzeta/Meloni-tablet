@@ -578,6 +578,7 @@ function recompute(){
   });
   const totFr=SA+SPER;                                   // frutti totali del campione (presenti + persi)
   const dmq=SA>0?SC/SA:0, bott=PL>0?SA/PL:0, kmean=PL>0?KG/PL:0;
+  const pesoCampione=SA>0?KG/SA:0;                       // peso medio PER SINGOLO FRUTTO, dalle letture (kg)
   const bppPot=PL>0?totFr/PL:0;                          // frutti/pianta potenziale (presenti + persi)
   setT('q_n',letture.length); setT('q_frutti',SA); setT('q_tot_pp',totFr);
   setT('q_bott',SA>0?f(bott,2):'\u2014'); setT('q_dmq',SA>0?f(dmq,1)+'%':'\u2014');
@@ -591,7 +592,8 @@ function recompute(){
   setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
   setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
   setT('r_frreali',totFr);
-  const kgpotc=bppPot*kmean, potc=a*kgpotc/100, potcha=aha*kgpotc/100;
+  setT('r_pmc',pesoCampione>0?f(pesoCampione,3)+' kg':'\u2014');
+  const kgpotc=bppPot*pesoCampione, potc=a*kgpotc/100, potcha=aha*kgpotc/100;
   setT('r_kgpotc',kgpotc?f(kgpotc,3)+' kg':'\u2014');
   setT('r_potc',potc?f(potc,2)+' q.li':'\u2014');
   setT('r_potcha',potcha?f(potcha,2)+' q.li/ha':'\u2014');
