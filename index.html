@@ -183,9 +183,10 @@
     <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
-    <div class="res"><span class="k">Frutti reali contati (pres.+persi)</span><span class="v" id="r_frreali">0</span></div>
     <div class="lgt" style="margin-top:10px">Potenziale da campione (solo dati di lettura)</div>
+    <div class="res"><span class="k">Frutti reali contati (pres.+persi)</span><span class="v" id="r_frreali">0</span></div>
     <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
+    <div class="res"><span class="k">peso medio da lettura</span><span class="v" id="r_pmc">&#8212;</span></div>
     <div class="res"><span class="k">kg/pianta da campione</span><span class="v" id="r_kgpotc">&#8212;</span></div>
     <div class="res"><span class="k">Prod. potenziale da campione</span><span class="v" id="r_potc">&#8212;</span></div>
     <div class="res"><span class="k">Prod. potenziale da campione / ha</span><span class="v" id="r_potcha">&#8212;</span></div>
@@ -507,6 +508,7 @@ function renderLetture(){
   const box=document.getElementById('letture');box.innerHTML='';
   const pesoPot=nv('peso');
   letture.forEach((L,li)=>{
+    if((!L.w||L.w<=0) && pesoPot>0){ L.w=pesoPot; }   // fissa il peso una volta sola: da qui in poi indipendente dal campo in alto
     const div=document.createElement('div');div.className='lettura';
     let html='<div class="lhead"><span class="t">Lettura '+(li+1)+'</span>';
     if(letture.length>1) html+='<button class="rm" onclick="delLettura('+li+')">Rimuovi</button>';
@@ -589,7 +591,7 @@ function recompute(){
   setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
   setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
   setT('r_frreali',totFr);
-  const kgpotc=bppPot*peso, potc=a*kgpotc/100, potcha=aha*kgpotc/100;
+  const kgpotc=bppPot*kmean, potc=a*kgpotc/100, potcha=aha*kgpotc/100;
   setT('r_kgpotc',kgpotc?f(kgpotc,3)+' kg':'\u2014');
   setT('r_potc',potc?f(potc,2)+' q.li':'\u2014');
   setT('r_potcha',potcha?f(potcha,2)+' q.li/ha':'\u2014');
