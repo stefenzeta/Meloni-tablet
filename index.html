@@ -184,6 +184,8 @@
     <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
     <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
+    <div class="res"><span class="k">Frutti reali contati (pres.+persi)</span><span class="v" id="r_frreali">0</span></div>
+    <div class="res"><span class="k">Frutti potenziali (partita)</span><span class="v" id="r_frpot">&#8212;</span></div>
     <div class="note">Se lasci vuoto "Frutti/pianta potenz.", uso questo valore dal campione (presenti + persi).</div>
     <div class="tabsel" style="margin-top:8px">
       <button id="uA_part" class="on" onclick="setUnitA('part')">Dato a partita</button>
@@ -261,6 +263,7 @@
     <h2>Totale qualit&#224;</h2>
     <div class="res"><span class="k">Letture eseguite</span><span class="v" id="q_n">0</span></div>
     <div class="res"><span class="k">Frutti contati totali</span><span class="v" id="q_frutti">0</span></div>
+    <div class="res"><span class="k">Totale con persi (presenti+persi)</span><span class="v" id="q_tot_pp">0</span></div>
     <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="q_bott">&#8212;</span></div>
     <div class="res big"><span class="k">Danno medio qualit&#224; (mediato)</span><span class="v" id="q_dmq">&#8212;</span></div>
     <div class="note" style="color:#cfc6b4">Entra da solo nella PERIZIA (quantit&#224; + qualit&#224; residuata).</div>
@@ -571,7 +574,7 @@ function recompute(){
   const totFr=SA+SPER;                                   // frutti totali del campione (presenti + persi)
   const dmq=SA>0?SC/SA:0, bott=PL>0?SA/PL:0, kmean=PL>0?KG/PL:0;
   const bppPot=PL>0?totFr/PL:0;                          // frutti/pianta potenziale (presenti + persi)
-  setT('q_n',letture.length); setT('q_frutti',SA);
+  setT('q_n',letture.length); setT('q_frutti',SA); setT('q_tot_pp',totFr);
   setT('q_bott',SA>0?f(bott,2):'\u2014'); setT('q_dmq',SA>0?f(dmq,1)+'%':'\u2014');
 
   // potenziale: frutti/pianta a mano, altrimenti dal campione (presenti + persi)
@@ -582,6 +585,8 @@ function recompute(){
   setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
   setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
   setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
+  setT('r_frreali',totFr);
+  setT('r_frpot',(bpot>0&&a>0)?f(bpot*a,0):'\u2014');
 
   const ott=a*kmean/100, ottha=aha*kmean/100;
   setT('r_bott',SA>0?f(bott,2):'\u2014');
