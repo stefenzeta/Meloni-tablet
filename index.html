@@ -214,7 +214,7 @@
   </div>
 
   <div class="box">
-    <h2>3 &#183; Quantit&#224;</h2>
+    <h2>3 &#183; Quantit&#224; (Ottenibile)</h2>
     <div class="fromq">&#8627; dalle letture della scheda QUALIT&#192;</div>
     <div class="res"><span class="k">Frutti mercantili / pianta</span><span class="v" id="r_bott">&#8212;</span></div>
     <div class="res"><span class="k">kg/pianta ottenibile</span><span class="v" id="r_kgott">&#8212;</span></div>
@@ -531,6 +531,7 @@ function renderLetture(){
       '<input class="val" id="lp'+li+'" type="number" inputmode="numeric" value="'+(L.persi||0)+'" oninput="setPersi('+li+',this.value)">'+
       '<button class="plus" onclick="pstep('+li+',1)">+</button></div></div>';
     html+='<div class="lout"><span class="k">Reali contati <b id="lfr'+li+'">0</b> \u00b7 Potenziali (+persi) <b id="lpot'+li+'">0</b> \u00b7 Danno <b id="ldmq'+li+'">\u2014</b></span></div>';
+    html+='<div class="lout" style="border-top:1.5px dashed #ccc4ae"><span class="k">Potenziale/ha <b id="lpotha'+li+'">\u2014</b> \u00b7 Ottenibile/ha <b id="lottha'+li+'">\u2014</b> <b id="ldqlet'+li+'"></b></span></div>';
     div.innerHTML=html;box.appendChild(div);
   });
 }
@@ -577,13 +578,21 @@ function recompute(){
   }
 
   let SA=0,SC=0,PL=0,KG=0,SPER=0;
+  const ottha_per_lettura=[];
   letture.forEach((L,li)=>{
     let sa=0,sc=0; L.c.forEach((n,i)=>{sa+=n;sc+=n*(coeffs[i]||0);});
     const w=(L.w&&L.w>0)?L.w:peso;
     const dm=sa>0?sc/sa:0;
-    setT('lfr'+li,sa); setT('lpot'+li,sa+(L.persi>0?L.persi:0)); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
+    const persi_li=(L.persi>0?L.persi:0), pl_li=(L.pl>0?L.pl:0);
+    setT('lfr'+li,sa); setT('lpot'+li,sa+persi_li); setT('ldmq'+li, sa>0?f(dm,1)+'%':'\u2014');
     bandsActive().forEach((b,i)=>setT('lcf'+li+'_'+i,(coeffs[i]||0)+'%'));
-    SA+=sa; SC+=sc; PL+=(L.pl>0?L.pl:0); KG+=sa*w; SPER+=(L.persi>0?L.persi:0);
+    // potenziale/ottenibile SOLO di questa lettura, a q.li/ha (piante/ha costante di tutta la perizia)
+    const bppPot_li=pl_li>0?(sa+persi_li)/pl_li:0, bott_li=pl_li>0?sa/pl_li:0;
+    const potha_li=aha*(bppPot_li*w)/100, ottha_li=aha*(bott_li*w)/100;
+    setT('lpotha'+li, potha_li>0?f(potha_li,1)+' q.li':'\u2014');
+    setT('lottha'+li, ottha_li>0?f(ottha_li,1)+' q.li':'\u2014');
+    ottha_per_lettura[li]=ottha_li;
+    SA+=sa; SC+=sc; PL+=pl_li; KG+=sa*w; SPER+=persi_li;
   });
   const totFr=SA+SPER;                                   // frutti totali del campione (presenti + persi)
   const dmq=SA>0?SC/SA:0, bott=PL>0?SA/PL:0, kmean=PL>0?KG/PL:0;
@@ -621,6 +630,18 @@ function recompute(){
   const ppIn = (UNITA==='ha') ? rawP*sup_ha : rawP;
   const Pconf = ppIn>0 ? ppIn : (A>0?A:pot);           // potenziale: la tua conferma se la scrivi, altrimenti segue l'assicurata
   const R = A>0 ? Math.min(A,Pconf) : Pconf;           // risarcibile: quello che scrivi tu (assicurata), o il piu basso se tu stesso confermi un potenziale minore
+
+  // danno quantita SOLO di questa lettura, tra parentesi (se R e' gia' disponibile, sup_ha per convertirlo a q.li/ha)
+  {
+    const Rha=(R>0&&sup_ha>0)?R/sup_ha:0;
+    letture.forEach((L,li)=>{
+      const ottha_li=ottha_per_lettura[li]||0;
+      if(Rha>0 && ottha_li>=0){
+        const dqL=Math.max(0,(Rha-ottha_li)/Rha*100);
+        setT('ldqlet'+li, '\u00b7 danno '+f(dqL,1)+'%');
+      } else setT('ldqlet'+li,'');
+    });
+  }
   let aStr='\u2014';
   if(UNITA==='ha' && rawA>0) aStr=f(rawA,2)+' q.li/ha'+(sup_ha>0?(' \u00b7 '+f(A,2)+' q.li'):'');
   else if(rawA>0) aStr=f(rawA,2)+' q.li'+(sup_ha>0?(' \u00b7 '+f(rawA/sup_ha,2)+' q.li/ha'):'');
@@ -712,4 +733,4 @@ keepAwake();document.body.addEventListener('click',()=>{if(!_wl)keepAwake();});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
-      </html>
+</html>
