@@ -176,15 +176,16 @@
 
   <div class="box">
     <h2>2 &#183; Potenziale</h2>
-    <div class="g2">
+    <div class="f"><label>Q.li assicurati / ha (esplorativo)</label><input id="assic_x" type="number" inputmode="decimal" oninput="recompute()" placeholder="es. 600"></div>
+    <div class="res"><span class="k">Frutti/pianta necessari (da qui sopra)</span><span class="v" id="r_frnec">&#8212;</span></div>
+    <div class="note">Solo calcolo esplorativo, staccato dal resto: dato il peso sotto, quanti frutti/pianta servirebbero per arrivare a questi quintali/ha. Se vuoi usarlo, copialo tu a mano in "Frutti/pianta potenz.". NON influisce sul potenziale confermato n&#233; sul danno.</div>
+    <div class="g2" style="margin-top:8px">
       <div class="f"><label>Frutti/pianta potenz.</label><input id="bpot" type="number" inputmode="decimal" oninput="recompute()"></div>
       <div class="f"><label>Peso medio frutto kg</label><input id="peso" type="number" inputmode="decimal" oninput="recompute()"></div>
     </div>
     <div class="res"><span class="k">kg/pianta potenziale</span><span class="v" id="r_kgpot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale teorica</span><span class="v" id="r_pot">&#8212;</span></div>
     <div class="res blue"><span class="k">Prod. potenziale / ha</span><span class="v" id="r_potha">&#8212;</span></div>
-    <div class="res" style="border-top:1.5px dashed #ccc4ae;padding-top:8px"><span class="k">Frutti/pianta necessari (da assicurata, informativo)</span><span class="v" id="r_frnec">&#8212;</span></div>
-    <div class="note">Solo calcolo esplorativo: dato il peso sopra e l'assicurata scritta sotto, quanti frutti/pianta servirebbero. NON influisce sul potenziale confermato n&#233; sul danno.</div>
     <div class="lgt" style="margin-top:10px">Potenziale da campione (solo dati di lettura)</div>
     <div class="res"><span class="k">Frutti reali contati (pres.+persi)</span><span class="v" id="r_frreali">0</span></div>
     <div class="res"><span class="k">Frutti/pianta da campione (pres. + persi)</span><span class="v" id="r_bcamp">&#8212;</span></div>
@@ -568,6 +569,12 @@ function recompute(){
   const a=(x>0&&y>0)?(s/(x*y))*((100-k)/100):0;
   setT('r_a',a?f(a,0):'\u2014'); setT('r_aha',aha?f(aha,0):'\u2014');
   const peso=nv('peso');
+  // calcolo esplorativo, staccato: frutti/pianta necessari da assic_x (campo dedicato, NON tocca assic/bpot/Pconf/R)
+  {
+    const assicX=nv('assic_x');
+    const frnec=(peso>0 && assicX>0 && aha>0) ? ((assicX*100/aha)/peso) : 0;
+    setT('r_frnec', frnec>0 ? f(frnec,2) : '\u2014');
+  }
 
   let SA=0,SC=0,PL=0,KG=0,SPER=0;
   letture.forEach((L,li)=>{
@@ -592,13 +599,6 @@ function recompute(){
   setT('r_kgpot',kgpot?f(kgpot,3)+' kg':'\u2014');
   setT('r_pot',pot?f(pot,2)+' q.li':'\u2014');
   setT('r_potha',potha?f(potha,2)+' q.li/ha':'\u2014');
-  // calcolo esplorativo, staccato: frutti/pianta necessari dato peso+assicurata (NON tocca bpot/Pconf/R)
-  {
-    const rawA_prev=nv('assic'), sup_ha_prev=s/10000;
-    const A_prev=(UNITA==='ha')?rawA_prev*sup_ha_prev:rawA_prev;
-    const frnec=(peso>0 && A_prev>0 && a>0) ? ((A_prev*100/a)/peso) : 0;
-    setT('r_frnec', frnec>0 ? f(frnec,2) : '\u2014');
-  }
   setT('r_bcamp',bppPot>0?f(bppPot,2):'\u2014'); setT('r_persi',SPER);
   setT('r_frreali',totFr);
   setT('r_pmc',pesoCampione>0?f(pesoCampione,3)+' kg':'\u2014');
@@ -712,4 +712,4 @@ keepAwake();document.body.addEventListener('click',()=>{if(!_wl)keepAwake();});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 </script>
 </body>
-</html>
+      </html>
